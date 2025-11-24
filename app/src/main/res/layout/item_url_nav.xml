@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="0dp"
+    app:contentPadding="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.coorchice.library.SuperTextView
+        android:id="@+id/tag_stv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="白"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:gravity="center"
+        app:stv_corner="6dp"
+        app:stv_solid="@color/app_color" />
+
+
+</androidx.cardview.widget.CardView>

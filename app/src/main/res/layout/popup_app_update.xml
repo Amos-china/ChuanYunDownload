@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/app_update_top_im"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/app_update_radius_6"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="20dp"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/version_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:text="版本号:2.0.0"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/size_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/black"
+                android:text="大小:24M"
+                android:textSize="14sp"/>
+
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:overScrollMode="never">
+
+                <TextView
+                    android:id="@+id/content_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="@color/gray_999"
+                    android:text="大小:24M"
+                    android:textSize="14sp"/>
+
+            </ScrollView>
+
+
+            <com.daimajia.numberprogressbar.NumberProgressBar
+                android:id="@+id/np_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:progress_text_color="@color/color_orange"
+                app:progress_text_size="14sp"
+                app:progress_reached_color="@color/color_orange"
+                app:progress_max="100"
+                app:progress_current="0"/>
+
+            <com.coorchice.library.SuperTextView
+                android:id="@+id/update_stv"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:text="立即更新"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                app:stv_corner="23dp"
+                app:stv_solid="@color/color_orange"/>
+
+            <com.coorchice.library.SuperTextView
+                android:id="@+id/wp_update_stv"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginTop="10dp"
+                android:text="网盘更新"
+                android:visibility="gone"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                app:stv_corner="23dp"
+                app:stv_solid="@color/color_orange"/>
+
+        </LinearLayout>
+
+
+</LinearLayout>

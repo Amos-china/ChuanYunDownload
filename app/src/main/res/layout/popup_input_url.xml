@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/status_bar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray_e2e2e2"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/search_et"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:background="@color/gray_e2e2e2"
+                        android:hint="请输入网址或者关键字"
+                        android:padding="10dp"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/clear_im"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:padding="5dp"
+                        android:src="@mipmap/clear_btn" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/cancel_tv"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:text="取消"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/copy_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="将剪切板最新内容粘贴到输入框"
+        android:padding="10dp"
+        android:textColor="@color/app_color"
+        android:textSize="14sp"
+        android:background="@color/gray_e2e2e2"/>
+
+    <LinearLayout
+        android:id="@+id/open_url_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:padding="5dp"
+            android:src="@mipmap/url_sear_im"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="打开网址："
+            android:textColor="@color/black"
+            android:layout_gravity="center_vertical"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/open_url_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp"
+            android:textSize="14sp"
+            android:textColor="@color/app_color"
+            android:layout_gravity="center_vertical"/>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/tb_right"
+            android:padding="5dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/baidu_search_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:padding="5dp"
+            android:src="@mipmap/baidu_search_im"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="bing打开："
+            android:textColor="@color/black"
+            android:layout_gravity="center_vertical"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/baidu_search_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp"
+            android:textSize="14sp"
+            android:textColor="@color/app_color"
+            android:layout_gravity="center_vertical"/>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/tb_right"
+            android:padding="5dp"/>
+    </LinearLayout>
+
+
+</LinearLayout>

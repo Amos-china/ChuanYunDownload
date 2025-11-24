@@ -1,0 +1,146 @@
+
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.chuanyun.downloader'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.chuanyun.downloader"
+        minSdk 26
+        targetSdk 29
+        versionCode 4
+        versionName "1.0.3"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk{ //加载so文件
+//            abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64" ,"armeabi"
+            abiFilters 'arm64-v8a'    //过滤的so库版本
+        }
+    }
+
+    signingConfigs {
+        zyD {
+            storeFile file('chuanyun.jks')
+            storePassword "123456"
+            keyAlias "key0"
+            keyPassword "123456"
+        }
+        zyR {
+            storeFile file('chuanyun.jks')
+            storePassword "123456"
+            keyAlias "key0"
+            keyPassword "123456"
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.zyR
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    implementation project(path: ':Aplayer')
+
+    implementation project(path: ':XPopup')
+
+
+    implementation fileTree(includes: ['*jar','.arr'],dir: 'libs')
+
+    // RxJava
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.20'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1' // 如果你在Android上使用
+    implementation 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
+
+    implementation 'com.jakewharton:butterknife:10.2.3'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
+
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+
+    implementation 'com.blankj:utilcodex:1.31.1'
+
+    implementation "io.github.cymchad:BaseRecyclerViewAdapterHelper:3.0.14"
+
+    implementation 'com.github.getActivity:XXPermissions:18.63'
+
+    def room_version = "2.4.2"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
+
+    implementation 'com.github.hackware1993:MagicIndicator:1.6.0'
+
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
+    implementation 'com.github.chenBingX:SuperTextView:3.2.6'
+
+
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+//    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+
+    implementation 'org.greenrobot:eventbus:3.3.1'
+
+    implementation 'com.github.Justson.AgentWeb:agentweb-core:v5.0.0-alpha' // (必选)
+    implementation 'com.github.Justson.AgentWeb:agentweb-filechooser:v5.0.0-alpha' // (可选)
+    implementation 'com.github.Justson:Downloader:v5.0.0' // (可选)
+
+    implementation 'com.tencent:mmkv:2.0.1'
+
+    implementation 'io.github.azhon:appupdate:4.3.6'
+
+    implementation 'com.daimajia.numberprogressbar:library:1.4@aar'
+
+    implementation  'com.umeng.umsdk:common:9.4.7'// 必选
+    implementation  'com.umeng.umsdk:asms:1.4.1'// 必选
+
+    implementation  'com.umeng.umsdk:abtest:1.0.0'//使用U-App中ABTest能力，可选
+
+    //友盟Push依赖
+    implementation 'com.umeng.umsdk:push:+'
+
+    implementation 'com.github.zzz40500:android-shapeLoadingView:1.0.3.2'
+
+    implementation 'com.tencent.bugly:crashreport:latest.release'
+
+    implementation 'com.blankj:utilcodex:1.31.1'
+
+    implementation 'com.alibaba:fastjson:2.0.28'
+
+    implementation 'xyz.doikki.android.dkplayer:dkplayer-java:3.3.7'
+
+    implementation 'xyz.doikki.android.dkplayer:videocache:3.3.7'
+
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+
+
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+    implementation("com.google.code.gson:gson:2.10.1") {
+        force = true
+    }
+}

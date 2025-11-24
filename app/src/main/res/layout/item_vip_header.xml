@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+    
+    <ImageView
+        android:id="@+id/user_icon_im"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:src="@mipmap/user_icon_yellow"/>
+
+    <TextView
+        android:id="@+id/user_nike_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="昵称"
+        android:textSize="16sp"
+        android:textColor="@color/yellow_vip_text_des_s"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/user_icon_im" />
+
+    <TextView
+        android:id="@+id/vip_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="有效期"
+        android:textSize="12sp"
+        android:textColor="@color/yellow_vip_text_des_s"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/user_icon_im"
+        android:layout_alignBottom="@+id/user_icon_im"/>
+
+</RelativeLayout>

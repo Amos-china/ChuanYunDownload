@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/bg_color">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/app_color"
+        android:padding="10dp">
+
+        <View
+            android:id="@+id/status_bar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="我的"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"/>
+
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/sign_in_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="每日签到"
+                android:textColor="@color/white"
+                android:textSize="14sp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardElevation="0dp"
+                app:cardCornerRadius="10dp">
+
+                <RelativeLayout
+                    android:id="@+id/user_rl"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:background="@color/white">
+
+                    <ImageView
+                        android:id="@+id/icon_im"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@mipmap/user_icon_yellow"/>
+
+                    <TextView
+                        android:id="@+id/user_name_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/icon_im"
+                        android:layout_marginLeft="20dp"
+                        android:layout_centerVertical="true"
+                        android:text="一位神秘的网友"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"/>
+
+                    <TextView
+                        android:id="@+id/vip_time_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:layout_toRightOf="@+id/icon_im"
+                        android:layout_alignBottom="@+id/icon_im"
+                        android:layout_marginLeft="5dp"
+                        android:text="普通用户"
+                        android:textSize="12sp"
+                        android:textColor="@color/yellow_vip_btn"/>
+
+                    <ImageView
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:visibility="gone"
+                        android:src="@mipmap/you_jian_tou_2"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"/>
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.chuanyun.downloader.base.view.CustomItemLinearLayout
+                        android:id="@+id/vip_cll"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cll_title_str="会员中心"
+                        android:visibility="gone"
+                        app:cll_title_color="@color/yellow_vip_btn"
+                        app:cll_show_bottom_line_view="false"/>
+
+                    <com.chuanyun.downloader.base.view.CustomItemLinearLayout
+                        android:id="@+id/gf_kf_cll"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cll_title_str="问题反馈"
+                        app:cll_show_top_view="false"
+                        app:cll_show_bottom_line_view="true"
+                        app:cll_left_im_src="@mipmap/kefu"/>
+
+
+                    <com.chuanyun.downloader.base.view.CustomItemLinearLayout
+                        android:id="@+id/fx_cll"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cll_title_str="分享软件"
+                        app:cll_left_im_src="@mipmap/fenxiang"
+                        app:cll_show_top_view="false"
+                        app:cll_show_bottom_line_view="true"/>
+
+                    <com.chuanyun.downloader.base.view.CustomItemLinearLayout
+                        android:id="@+id/cll_setting"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cll_title_str="软件设置"
+                        app:cll_left_im_src="@mipmap/shezhi"
+                        app:cll_show_top_view="false"
+                        app:cll_show_bottom_line_view="true"/>
+
+                    <com.chuanyun.downloader.base.view.CustomItemLinearLayout
+                        android:id="@+id/gy_cll"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cll_title_str="关于我们"
+                        app:cll_left_im_src="@mipmap/guanyu"
+                        app:cll_show_top_view="false"
+                        app:cll_show_bottom_line_view="true"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

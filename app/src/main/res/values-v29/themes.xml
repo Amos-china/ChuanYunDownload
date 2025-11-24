@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="NoActionBarTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- 设置状态栏颜色： -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!-- 这里可以添加个性化的主题样式 -->
+        <item name="android:forceDarkAllowed">false</item>
+    </style>
+</resources>

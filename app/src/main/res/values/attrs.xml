@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <declare-styleable name="CustomItemLinearLayout">
+        <attr name="cll_bg_color" format="color"/>
+        <attr name="cll_title_color" format="color"/>
+        <attr name="cll_sub_title_color" format="color"/>
+        <attr name="cll_title_str" format="string"/>
+        <attr name="cll_sub_title_str" format="string"/>
+        <attr name="cll_show_top_view" format="boolean"/>
+        <attr name="cll_show_right_im" format="boolean"/>
+        <attr name="cll_left_im_src" format="reference"/>
+        <attr name="cll_show_bottom_line_view" format="boolean"/>
+    </declare-styleable>
+
+</resources>

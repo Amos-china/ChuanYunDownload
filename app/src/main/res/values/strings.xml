@@ -1,0 +1,9 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name" tools:ignore="MissingTranslation">穿云下载</string>
+    <string name="user_policy" translatable="false">欢迎使用穿云下载APP：\n
+        \t\t在您使用APP或者服务之前，请您仔细阅读并充分理解《隐私政策》及《用户协议》；当您点击＂同意并继续＂并开始使用产品服务时，即表示您已阅读并同意条款内容，如果您不同意条款内容，将可能导致无法继续使用我们的APP及服务\n
+        \t\t同时我们的App使用了第三方统计SDK，在使用的过程中可能收集设备信息，如有疑问，请仔细阅读下方的友盟隐私政策</string>
+    
+    <string name="permissions_message" translatable="false">我们需要获取文件读写权限用来创建您下载的文件和相关数据，并不会侵害您的任何权益，您可以手动点击请求权限按钮并给与文件读写权限，如果您不清楚该如何手动申请权限，我们建议您卸载软件重新安装并允许软件自动申请相关权限，否则软件无法正常运行。</string>
+    
+</resources>

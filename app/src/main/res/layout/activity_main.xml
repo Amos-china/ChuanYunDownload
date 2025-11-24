@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".tabbar.MainActivity"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.chuanyun.downloader.base.view.ControlScrollViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="70.3dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:layout_marginBottom="70dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/gray_e2e2e2"/>
+
+    <net.lucode.hackware.magicindicator.MagicIndicator
+        android:id="@+id/tabBar_view"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="70dp">
+    </net.lucode.hackware.magicindicator.MagicIndicator>
+
+</RelativeLayout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.tools.aplayer">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <application>
+
+        <activity android:name=".APlayerActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="Aplayer播放器"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeFullScreen"
+            android:resizeableActivity="true"
+            tools:targetApi="n">
+
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/gray_e2e2e2">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <View
+            android:id="@+id/status_bar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <ImageView
+                android:id="@+id/back_im"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:src="@mipmap/blak_back"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="用户信息"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.chuanyun.downloader.base.view.CustomItemLinearLayout
+                android:id="@+id/name_cll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cll_title_str="昵称"
+                app:cll_sub_title_str="@string/app_name"
+                app:cll_show_bottom_line_view="true"/>
+
+            <com.chuanyun.downloader.base.view.CustomItemLinearLayout
+                android:id="@+id/set_acctno_cll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cll_title_str="设置账号"
+                app:cll_show_top_view="false"
+                app:cll_show_bottom_line_view="true"/>
+
+            <com.chuanyun.downloader.base.view.CustomItemLinearLayout
+                android:id="@+id/chang_password_cll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cll_title_str="修改密码"
+                app:cll_show_top_view="false"
+                app:cll_show_bottom_line_view="true"/>
+
+            <com.chuanyun.downloader.base.view.CustomItemLinearLayout
+                android:id="@+id/reset_password_cll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cll_title_str="重置密码"
+                app:cll_show_top_view="false"
+                app:cll_show_bottom_line_view="true"/>
+
+            <com.chuanyun.downloader.base.view.CustomItemLinearLayout
+                android:id="@+id/bind_email_cll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cll_title_str="绑定邮箱"
+                app:cll_show_top_view="false"
+                app:cll_show_bottom_line_view="false"/>
+
+            <com.coorchice.library.SuperTextView
+                android:id="@+id/loginOut_tv"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="40dp"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:text="退出登录"
+                android:gravity="center"
+                app:stv_corner="23dp"
+                app:stv_solid="@color/black"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
