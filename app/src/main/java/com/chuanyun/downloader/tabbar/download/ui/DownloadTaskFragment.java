@@ -142,7 +142,7 @@ public class DownloadTaskFragment extends BaseLazyFragment {
             });
         }else {
 
-            TTDownloadService.getInstance().setDownloadSuccessListener(fileInfoModel -> ThreadUtils.runOnUiThread(() -> downloadIndexAdapter.addData(fileInfoModel)));
+            TTDownloadService.getInstance().setDownloadSuccessListener(fileInfoModel -> ThreadUtils.runOnUiThread(() -> downloadIndexAdapter.addData(0,fileInfoModel)));
 
             Disposable disposable = downloadDao.getCompleteTaskInfoList()
                     .subscribeOn(Schedulers.io())

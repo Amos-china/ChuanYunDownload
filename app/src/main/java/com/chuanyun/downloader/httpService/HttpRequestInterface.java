@@ -18,14 +18,14 @@ public interface HttpRequestInterface {
 //    @POST("show/subjectInfo")
 //    Observable<ResultInfo<SubjectInfoModel>> getShowSubjectInfo(@Field("is_all") int isAll);
 
-
-
-//    @POST("user/myUserInfo")"https://api.feichixiazai.com/api/";
 //    Observable<ResultInfo<UserInfoIndexModel>> getMyUserInfo();
 
 
 
     @GET("api/api.php")
+
+
+//    @POST("user/myUserInfo")"https://api.feichixiazai.com/api/";
     Observable<ApiRootModel<ApiIndexModel>> getApiIndex();
 
     @GET("api/recommend.php")

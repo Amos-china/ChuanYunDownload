@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="20dp"
+    android:height="20dp"
+    android:viewportWidth="1024"
+    android:viewportHeight="1024">
+    <!-- 圆形背景 -->
+    <path
+        android:fillColor="#07C160"
+        android:pathData="M512,512m-512,0a512,512 0,1 0,1024 0a512,512 0,1 0,-1024 0Z"/>
+    <!-- 大气泡 - 居中调整 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M384,256c-140.8,0 -256,96 -256,214.4c0,66.56 37.12,126.72 95.36,167.04l-23.68,71.04 82.56,-41.28c26.88,8.96 55.68,14.08 86.08,14.08c8.96,0 17.92,-0.48 26.56,-1.28c-5.6,-18.56 -8.96,-38.4 -8.96,-58.88c0,-118.4 117.12,-214.4 261.76,-214.4c8.96,0 17.92,0.48 26.56,1.28c-23.68,-89.6 -134.4,-152.32 -284.48,-152.32z"/>
+    <!-- 大气泡眼睛 -->
+    <path
+        android:fillColor="#07C160"
+        android:pathData="M304,384m-32,0a32,32 0,1 0,64 0a32,32 0,1 0,-64 0Z"/>
+    <path
+        android:fillColor="#07C160"
+        android:pathData="M448,384m-32,0a32,32 0,1 0,64 0a32,32 0,1 0,-64 0Z"/>
+    <!-- 小气泡 - 居中调整 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M640,448c-118.4,0 -214.4,78.72 -214.4,175.36s96,175.36 214.4,175.36c25.6,0 49.6,-4.16 72.32,-11.2l67.2,33.6l-19.52,-58.24c47.68,-33.28 78.08,-82.56 78.08,-139.52c0,-96.64 -96,-175.36 -198.08,-175.36z"/>
+    <!-- 小气泡眼睛 -->
+    <path
+        android:fillColor="#07C160"
+        android:pathData="M576,544m-28,0a28,28 0,1 0,56 0a28,28 0,1 0,-56 0Z"/>
+    <path
+        android:fillColor="#07C160"
+        android:pathData="M704,544m-28,0a28,28 0,1 0,56 0a28,28 0,1 0,-56 0Z"/>
+</vector>
