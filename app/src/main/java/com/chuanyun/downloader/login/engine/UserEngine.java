@@ -97,8 +97,8 @@ public class UserEngine extends BaseEngine {
         return request.heartbeat(token);
     }
 
-    public Observable<ApiRootModel<String>> getGoodsList(int page) {
-        return request.getGoods(page);
+    public Observable<ApiRootModel<String>> getGoodsList() {
+        return request.getGoods(token);
     }
 
     public Observable<ApiRootModel<String>> fen(int fen) {

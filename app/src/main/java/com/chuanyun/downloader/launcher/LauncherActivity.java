@@ -99,8 +99,8 @@ public class LauncherActivity extends BaseActivity {
                App.getApp().setApiIndexModel(indexModel);
                if (checkIndexModel(indexModel)) {
                    if (checkAppVersion(indexModel)) {
-//                       startMainController();
-                       loginUser();
+                       startMainController();
+//                       loginUser();
                    }
                }
            }else {
@@ -126,56 +126,6 @@ public class LauncherActivity extends BaseActivity {
             }
         });
         addDisposable(disposable);
-    }
-
-    private void loginUser() {
-        if (UserLoginManager.checkUserLogin()) {
-            UserLoginInfoMessage message = UserLoginManager.getUserLoginMessage();
-            Disposable disposable = userEngine.userLogin(message.getAccount(),message.getPassword(),App.getApp().getDeviceUuid())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(rootModel -> {
-                        if (rootModel.getCode() == HttpConfig.STATUS_OK) {
-                            LoginModel loginModel = JSON.parseObject(rootModel.getData(),LoginModel.class);
-                            UserLoginManager.setLoginInfo(loginModel);
-                            startMainController();
-                        }else  {
-                            showAlertView("连接错误","code:" + rootModel.getCode() + "\n" + "msg:" + rootModel.getMsg(),this::loginUser);
-                        }
-                    }, throwable -> {
-                        showAlertView("连接错误",throwable.getMessage(),this::loginUser);
-                    });
-            addDisposable(disposable);
-        }else {
-//            startMainController();
-            String uuid = App.getApp().getDeviceUuid();
-            String account = uuid.replace("-","");
-            if (account.length() > 18) {
-                account = account.substring(0,17);
-            }
-
-            String passWord = account;
-            String finalAccount = account;
-
-            Disposable disposable = userEngine.userReg(account,"",passWord,uuid)
-                    .flatMap(rootModel -> {
-                        if (rootModel.getCode() == HttpConfig.STATUS_OK || rootModel.getCode() == HttpConfig.STATUS_102) {
-                            return userEngine.userLogin(finalAccount,passWord,uuid);
-                        }else {
-                            return Observable.error(new Throwable(rootModel.getMsg()));
-                        }
-                    })
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .retry(3)
-                    .subscribe(rootModel -> {
-                        LoginModel loginModel = JSON.parseObject(rootModel.getData(),LoginModel.class);
-                        UserLoginManager.setLoginInfo(loginModel);
-                        UserLoginManager.updateUserMessage(finalAccount,passWord,1);
-                        startMainController();
-                    },throwable -> showAlertView("提示信息",throwable.getMessage() + "uuid:" + App.getApp().getDeviceUuid(), this::finish));
-            addDisposable(disposable);
-        }
     }
 
     private void startMainController() {

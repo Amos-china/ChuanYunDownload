@@ -100,7 +100,7 @@ public interface HttpRequestInterface {
 
     @FormUrlEncoded
     @POST("api/1000/cyxz/goods")
-    Observable<ApiRootModel<String>> getGoods(@Field("pg") int pg);
+    Observable<ApiRootModel<String>> getGoods(@Field("token") String token);
 
     @FormUrlEncoded
     @POST("api/1000/cyxz/orderQuery")

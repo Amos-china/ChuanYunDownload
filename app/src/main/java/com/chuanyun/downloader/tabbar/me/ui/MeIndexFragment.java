@@ -139,12 +139,12 @@ public class MeIndexFragment extends BaseLazyFragment {
     @OnClick(R.id.sign_in_tv)
     public void userSignInAction() {
         //昵称
-//        LoginModel userLoginModel = UserLoginManager.getLoginInfo();
-//        if (userLoginModel != null) {
-//            userSignIn();
-//        }else {
-//            showUserLoginSheet();
-//        }
+        LoginModel userLoginModel = UserLoginManager.getLoginInfo();
+        if (userLoginModel != null) {
+            userSignIn();
+        }else {
+            showUserLoginSheet();
+        }
     }
 
     private void userSignIn() {
@@ -195,13 +195,13 @@ public class MeIndexFragment extends BaseLazyFragment {
 
     @OnClick(R.id.user_rl)
     public void userInfoAction() {
-//        LoginModel userLoginModel = UserLoginManager.getLoginInfo();
-//        if (userLoginModel != null) {
-//            Intent intent = new Intent(getContext(),UserCenterActivity.class);
-//            startActivity(intent);
-//        }else {
-//           showUserLoginSheet();
-//        }
+        LoginModel userLoginModel = UserLoginManager.getLoginInfo();
+        if (userLoginModel != null) {
+            Intent intent = new Intent(getContext(),UserCenterActivity.class);
+            startActivity(intent);
+        }else {
+           showUserLoginSheet();
+        }
     }
 
     private void showUserLoginSheet() {

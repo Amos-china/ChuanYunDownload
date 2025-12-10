@@ -194,7 +194,7 @@ public class VipCenterActivity extends BaseActivity {
 
     private void getGoodsData() {
         showDiaLog("", false);
-        Disposable disposable = userEngine.getGoodsList(1)
+        Disposable disposable = userEngine.getGoodsList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap(rootModel -> {
