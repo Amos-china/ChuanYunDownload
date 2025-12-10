@@ -1,90 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/root_card_v"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginTop="10dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    app:cardCornerRadius="8dp"
-    app:cardBackgroundColor="@color/yellow_vip_text_mon_s">
-
+    android:background="#F5F7FA"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="6dp"
+    android:paddingBottom="6dp">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/show_card_view"
+        android:id="@+id/root_card_v"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="1dp"
-        app:cardCornerRadius="8dp"
-        app:cardBackgroundColor="@color/black"
+        app:cardCornerRadius="12dp"
         app:cardElevation="0dp"
-        app:contentPadding="10dp">
-        <LinearLayout
+        app:cardBackgroundColor="#E8F0FE">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/show_card_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_margin="2dp"
+            app:cardCornerRadius="10dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardElevation="0dp">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:gravity="center_vertical">
 
-                <TextView
-                    android:id="@+id/vip_title_tv"
+                <!-- 左侧套餐信息 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/vip_title_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="年度会员"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="#333333"/>
+
+                    <TextView
+                        android:id="@+id/vip_sup_title_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="360天"
+                        android:textColor="#999999"
+                        android:textSize="13sp"/>
+
+                </LinearLayout>
+
+                <!-- 右侧价格 -->
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="年度会员"
-                    android:textSize="16sp"
-                    android:textColor="@color/yellow_vip_text_des_s"/>
+                    android:orientation="vertical"
+                    android:gravity="right">
 
-                <TextView
-                    android:id="@+id/vip_sup_title_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="360天"
-                    android:textColor="@color/yellow_vip_text_des_s"
-                    android:textSize="14sp"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="bottom">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="¥"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/app_color"/>
+
+                        <TextView
+                            android:id="@+id/vip_money_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="80"
+                            android:textStyle="bold"
+                            android:textSize="24sp"
+                            android:textColor="@color/app_color"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/yj_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="原价:90"
+                        android:textColor="#BBBBBB"
+                        android:textSize="11sp"/>
+
+                </LinearLayout>
+
             </LinearLayout>
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1"/>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/vip_money_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="80"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:layout_gravity="right"
-                    android:textColor="@color/red"/>
-
-                <TextView
-                    android:id="@+id/yj_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="原价:90"
-                    android:textColor="@color/red"
-                    android:textSize="14sp"/>
-
-            </LinearLayout>
-
-
-
-        </LinearLayout>
-
+        </androidx.cardview.widget.CardView>
 
     </androidx.cardview.widget.CardView>
 
-
-</androidx.cardview.widget.CardView>
+</FrameLayout>

@@ -1,35 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
-    
-    <ImageView
-        android:id="@+id/user_icon_im"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_centerVertical="true"
-        android:src="@mipmap/user_icon_yellow"/>
+    android:orientation="vertical"
+    android:background="@drawable/bg_vip_header_gradient"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="24dp"
+    android:paddingBottom="28dp">
 
-    <TextView
-        android:id="@+id/user_nike_name_tv"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="昵称"
-        android:textSize="16sp"
-        android:textColor="@color/yellow_vip_text_des_s"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/user_icon_im" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/vip_time_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="有效期"
-        android:textSize="12sp"
-        android:textColor="@color/yellow_vip_text_des_s"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/user_icon_im"
-        android:layout_alignBottom="@+id/user_icon_im"/>
+        <!-- 头像 -->
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-</RelativeLayout>
+            <androidx.cardview.widget.CardView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                app:cardCornerRadius="32dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <ImageView
+                    android:id="@+id/user_icon_im"
+                    android:layout_width="58dp"
+                    android:layout_height="58dp"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/user_icon_yellow"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- VIP 标识 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:background="@color/app_color"
+                android:text="VIP"
+                android:textColor="#FFFFFF"
+                android:textSize="8sp"
+                android:textStyle="bold"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingTop="1dp"
+                android:paddingBottom="1dp"/>
+
+        </FrameLayout>
+
+        <!-- 用户信息 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/user_nike_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="昵称"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="#33FFFFFF"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp">
+
+                <TextView
+                    android:id="@+id/vip_time_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="有效期"
+                    android:textSize="12sp"
+                    android:textColor="#FFFFFF"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

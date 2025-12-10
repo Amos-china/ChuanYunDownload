@@ -4,8 +4,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:background="#F5F7FA">
 
+    <!-- 顶部导航栏 (保持不变) -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,103 +41,159 @@
         </RelativeLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/vip_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:overScrollMode="never"/>
 
+    <!-- 底部支付区域 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:padding="10dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:elevation="12dp">
+
+        <!-- 顶部分割线 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#EEEEEE"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
 
+            <!-- 支付方式 -->
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="支付方式:"
-                android:layout_marginRight="10dp"
-                android:gravity="center_vertical"
-                android:textColor="@color/black"/>
+                android:layout_height="wrap_content"
+                android:text="选择支付方式"
+                android:textColor="#333333"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
 
             <RadioGroup
                 android:id="@+id/radio_group"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 android:orientation="horizontal">
 
+                <!-- 支付宝选项 -->
                 <RadioButton
                     android:id="@+id/radio_ali"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:checked="true"
-                    android:button="@drawable/vip_center_radio_button"
-                    android:text=" 支付宝支付"/>
+                    android:button="@null"
+                    android:gravity="center_vertical|start"
+                    android:drawableStart="@drawable/ic_alipay"
+                    android:drawablePadding="8dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="支付宝"
+                    android:textSize="14sp"
+                    android:textColor="#333333"
+                    android:background="@drawable/bg_payment_option"/>
 
+                <View
+                    android:layout_width="12dp"
+                    android:layout_height="1dp"/>
+
+                <!-- 微信选项 -->
                 <RadioButton
                     android:id="@+id/radio_wx"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:button="@drawable/vip_center_radio_button"
-                    android:text=" 微信支付"/>
+                    android:button="@null"
+                    android:gravity="center_vertical|start"
+                    android:drawableStart="@drawable/ic_wechat_pay"
+                    android:drawablePadding="8dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="微信支付"
+                    android:textSize="14sp"
+                    android:textColor="#333333"
+                    android:background="@drawable/bg_payment_option"/>
 
             </RadioGroup>
 
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="微信支付用户可加客服QQ手动开通会员"
-            android:textColor="@color/red"
-            android:layout_marginTop="10dp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp">
-
-            <CheckBox
-                android:id="@+id/vip_cb"
+            <!-- 提示信息（小圆角方形） -->
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="我已阅读并同意 "
-                android:textSize="14sp"
-                android:textColor="@color/black"/>
+                android:layout_marginTop="10dp"
+                android:layout_gravity="start"
+                android:background="@drawable/bg_vip_tip"
+                android:gravity="center_vertical">
 
-            <TextView
-                android:id="@+id/user_vip_xz"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="💡"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:text="微信支付用户可加客服QQ手动开通会员"
+                    android:textColor="#FF6B6B"
+                    android:textSize="11sp"/>
+
+            </LinearLayout>
+
+            <!-- 协议勾选 -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/blue_01"
-                android:text="《用户会员须知》"
-                android:textSize="14sp"/>
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical">
+
+                <CheckBox
+                    android:id="@+id/vip_cb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="我已阅读并同意"
+                    android:textSize="12sp"
+                    android:textColor="#666666"/>
+
+                <TextView
+                    android:id="@+id/user_vip_xz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/app_color"
+                    android:text="《用户会员须知》"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
+            <!-- 购买按钮 -->
+            <com.coorchice.library.SuperTextView
+                android:id="@+id/buy_tv"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:text="立即开通"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                app:stv_solid="@color/app_color"
+                app:stv_corner="10dp"/>
 
         </LinearLayout>
-
-        <com.coorchice.library.SuperTextView
-            android:id="@+id/buy_tv"
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:text="立即购买"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:gravity="center"
-            app:stv_solid="@color/black"
-            app:stv_corner="23dp"/>
 
     </LinearLayout>
 
