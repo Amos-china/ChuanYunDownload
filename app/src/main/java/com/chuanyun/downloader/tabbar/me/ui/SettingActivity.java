@@ -62,7 +62,7 @@ public class SettingActivity extends BaseActivity {
         ringNoticeIm.setImageResource(getMipmapSrc(settingsModel.isRingNotice()));
         lowBatteryIm.setImageResource(getMipmapSrc(settingsModel.isLowBatteryDownload()));
         statusNoticeIm.setImageResource(getMipmapSrc(settingsModel.isStatusBarNotice()));
-        mobileIm.setImageResource(getMipmapSrc(settingsModel.isStatusBarNotice()));
+        mobileIm.setImageResource(getMipmapSrc(settingsModel.isUseMobileDownload()));
         witheListIm.setImageResource(getMipmapSrc(settingsModel.isWhiteList()));
         pathTv.setText(StorageHelper.createDownloadDir());
     }
@@ -128,13 +128,17 @@ public class SettingActivity extends BaseActivity {
 
     @OnClick(R.id.withe_list_im)
     public void witheListSettingAction() {
-        Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-        intent.setData(Uri.parse("package:" + getPackageName()));
-        startActivity(intent);
-        boolean set = !settingsModel.isWhiteList();
-        settingsModel.setWhiteList(set);
-        witheListIm.setImageResource(getMipmapSrc(settingsModel.isWhiteList()));
-        AppSettingsModel.saveSettings(settingsModel);
+        if (!settingsModel.isWhiteList()) {
+            Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+            intent.setData(Uri.parse("package:" + getPackageName()));
+            startActivity(intent);
+
+            settingsModel.setWhiteList(true);
+            witheListIm.setImageResource(getMipmapSrc(true));
+            AppSettingsModel.saveSettings(settingsModel);
+        } else {
+            showToast("不允许取消电池优化白名单");
+        }
     }
 
 

@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.os.Build;
+import android.widget.Toast;
 
 public class NetworkUtils {
     public static boolean getNetworkType4G(Context context) {
@@ -33,6 +34,20 @@ public class NetworkUtils {
             }
         }
         return false;
+    }
+
+    public static boolean isMobileNetwork(Context context) {
+        return getNetworkType4G(context);
+    }
+
+    public static void showMobileDataToast(Context context) {
+        if (context == null) {
+            return;
+        }
+        if (!isMobileNetwork(context)) {
+            return;
+        }
+        Toast.makeText(context, "请注意您正在使用移动数据", Toast.LENGTH_SHORT).show();
     }
 
     /**

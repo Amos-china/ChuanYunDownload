@@ -2,16 +2,12 @@ package com.chuanyun.downloader.web;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.http.SslError;
-import android.webkit.SslErrorHandler;
-import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.just.agentweb.AgentWeb;
 import com.chuanyun.downloader.R;
 import com.chuanyun.downloader.base.activity.BaseActivity;
-import com.just.agentweb.WebViewClient;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -84,7 +80,6 @@ public class WebViewController extends BaseActivity {
         agentWeb = AgentWeb.with(this)
                 .setAgentWebParent(webLL,new LinearLayout.LayoutParams(-1,-1))
                 .useDefaultIndicator()
-                .setWebViewClient(new CustomWebView())
                 .createAgentWeb()
                 .go(url);
 
@@ -94,14 +89,6 @@ public class WebViewController extends BaseActivity {
     @OnClick(R.id.back_im)
     public void backAction() {
         finish();
-    }
-
-    static class CustomWebView extends WebViewClient {
-        @Override
-        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-//            super.onReceivedSslError(view, handler, error);
-            handler.proceed();
-        }
     }
 
 }

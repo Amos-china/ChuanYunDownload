@@ -25,11 +25,14 @@ import com.chuanyun.downloader.login.model.LoginModel;
 import com.chuanyun.downloader.login.model.UserLoginManager;
 import com.chuanyun.downloader.login.popup.UserLoginPopupView;
 import com.chuanyun.downloader.models.ApiIndexModel;
+import com.chuanyun.downloader.models.AppSettingsModel;
 import com.chuanyun.downloader.models.TTTorrentInfo;
 import com.chuanyun.downloader.models.TorrentFileInfoModel;
 import com.chuanyun.downloader.popup.OnlinePlayPasrePopup;
 import com.chuanyun.downloader.tabbar.home.adapter.TorrentDetailAdapter;
 import com.chuanyun.downloader.tabbar.me.ui.VipCenterActivity;
+import com.chuanyun.downloader.utils.NetworkUtils;
+import com.chuanyun.downloader.eventBusModel.TorrentManagerEvent;
 
 import java.util.List;
 
@@ -39,6 +42,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
 
 public class TorrentDetailActivity extends BaseActivity {
 
@@ -202,6 +206,10 @@ public class TorrentDetailActivity extends BaseActivity {
 
     private void playFileModel(TorrentFileInfoModel torrentFileInfoModel) {
         String videoPath = "";
+        if (!torrentFileInfoModel.isDownload()
+                || torrentFileInfoModel.getDownloadStatus() != TorrentFileInfoModel.DOWNLOAD_STATUS_FINISH) {
+            NetworkUtils.showMobileDataToast(this);
+        }
         if (torrentFileInfoModel.isDownload()) {
 
             if (torrentFileInfoModel.getDownloadStatus() != 2) {
@@ -404,6 +412,11 @@ public class TorrentDetailActivity extends BaseActivity {
                         setSelectTotalNumUi();
 
                         UmengKeyUtils.uploadDownload(this,2);
+
+                        AppSettingsModel settingsModel = AppSettingsModel.getSettingsModel();
+                        if (settingsModel.isUseMobileDownload()) {
+                            NetworkUtils.showMobileDataToast(this);
+                        }
                     }
                 }, throwable -> {
                     hideLoadingDialog();
@@ -424,7 +437,11 @@ public class TorrentDetailActivity extends BaseActivity {
         Disposable disposable = torrentDao.setTorrentInfoIsLike(isLike,torrentInfo.getHash())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::configCollectIm, throwable -> {
+                .subscribe(() -> {
+                    configCollectIm();
+                    // 通知文件/收藏列表刷新
+                    EventBus.getDefault().post(new TorrentManagerEvent());
+                }, throwable -> {
                     Log.i(TAG, "collectImAction: " + throwable.getMessage());
                 });
         addDisposable(disposable);

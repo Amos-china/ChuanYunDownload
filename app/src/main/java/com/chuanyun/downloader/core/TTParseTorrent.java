@@ -9,6 +9,7 @@ import com.xunlei.downloadlib.XLTaskHelper;
 import com.xunlei.downloadlib.parameter.TorrentInfo;
 import com.chuanyun.downloader.app.App;
 import com.chuanyun.downloader.dao.TorrentDao;
+import com.chuanyun.downloader.eventBusModel.TorrentManagerEvent;
 import com.chuanyun.downloader.models.TTTorrentInfo;
 import com.chuanyun.downloader.models.TorrentFileInfoModel;
 import com.chuanyun.downloader.utils.FileTypeUtils;
@@ -25,6 +26,7 @@ import java.util.regex.Pattern;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
 
 public class TTParseTorrent {
 
@@ -170,7 +172,11 @@ public class TTParseTorrent {
         }
 
         TorrentDao torrentDao = App.getApp().getAppDataBase().torrentDao();
-        torrentDao.insertTorrentInfo(info).subscribeOn(Schedulers.io()).subscribe();
+        Disposable disposable = torrentDao.insertTorrentInfo(info)
+                .subscribeOn(Schedulers.io())
+                .doOnComplete(() -> EventBus.getDefault().post(new TorrentManagerEvent()))
+                .subscribe(() -> {}, throwable -> {});
+        addDisposable(disposable);
         return info;
     }
 
@@ -221,7 +227,11 @@ public class TTParseTorrent {
         }
 
         TorrentDao torrentDao = App.getApp().getAppDataBase().torrentDao();
-        torrentDao.insertTorrentInfo(info).subscribeOn(Schedulers.io()).subscribe();
+        Disposable disposable = torrentDao.insertTorrentInfo(info)
+                .subscribeOn(Schedulers.io())
+                .doOnComplete(() -> EventBus.getDefault().post(new TorrentManagerEvent()))
+                .subscribe(() -> {}, throwable -> {});
+        addDisposable(disposable);
 
         return info;
     }

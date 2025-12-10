@@ -140,7 +140,7 @@ public class MeIndexFragment extends BaseLazyFragment {
     public void userSignInAction() {
         //昵称
         LoginModel userLoginModel = UserLoginManager.getLoginInfo();
-        if (userLoginModel != null) {
+        if (userLoginModel != null && userLoginModel.getInfo() != null) {
             userSignIn();
         }else {
             showUserLoginSheet();
@@ -196,11 +196,11 @@ public class MeIndexFragment extends BaseLazyFragment {
     @OnClick(R.id.user_rl)
     public void userInfoAction() {
         LoginModel userLoginModel = UserLoginManager.getLoginInfo();
-        if (userLoginModel != null) {
+        if (userLoginModel != null && userLoginModel.getInfo() != null) {
             Intent intent = new Intent(getContext(),UserCenterActivity.class);
             startActivity(intent);
         }else {
-           showUserLoginSheet();
+            showUserLoginSheet();
         }
     }
 
@@ -218,7 +218,12 @@ public class MeIndexFragment extends BaseLazyFragment {
 
                 @Override
                 public void canRegisterCallBack() {
-                    showBottomSheet("可注册邮箱列表",apiIndexModel.getCanRegisterMailList(),(i,s) -> {
+                    ApiIndexModel indexModel = getApiIndexModelSafe();
+                    if (indexModel == null) {
+                        showToast("数据初始化中，请稍后再试");
+                        return;
+                    }
+                    showBottomSheet("可注册邮箱列表",indexModel.getCanRegisterMailList(),(i,s) -> {
 
                     });
                 }
@@ -249,9 +254,18 @@ public class MeIndexFragment extends BaseLazyFragment {
 //                    showToast("客服QQ已复制");
 //                });
         LoginModel loginModel = UserLoginManager.getLoginInfo();
+        if (loginModel == null || loginModel.getInfo() == null) {
+            showToast("请先登录");
+            return;
+        }
+        ApiIndexModel indexModel = getApiIndexModelSafe();
+        if (indexModel == null) {
+            showToast("数据初始化中，请稍后再试");
+            return;
+        }
         String userId = loginModel.getInfo().getUid();
         String enUserID = StringEncryptor.encrypt(userId);
-        startWebController(apiIndexModel.getGfkf() + enUserID,"问题反馈");
+        startWebController(indexModel.getGfkf() + enUserID,"问题反馈");
 
     }
 
@@ -259,12 +273,24 @@ public class MeIndexFragment extends BaseLazyFragment {
         WebViewController.loadWeb(getContext(),url,title);
     }
 
+    private ApiIndexModel getApiIndexModelSafe() {
+        if (apiIndexModel == null) {
+            apiIndexModel = App.getApp().getApiIndexModel();
+        }
+        return apiIndexModel;
+    }
+
 
     @OnClick(R.id.fx_cll)
     public void shareAppAction() {
+        ApiIndexModel indexModel = getApiIndexModelSafe();
+        if (indexModel == null) {
+            showToast("数据初始化中，请稍后再试");
+            return;
+        }
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT,apiIndexModel.getFenxiang());
+        intent.putExtra(Intent.EXTRA_TEXT,indexModel.getFenxiang());
         startActivity(Intent.createChooser(intent,"分享APP到"));
     }
 

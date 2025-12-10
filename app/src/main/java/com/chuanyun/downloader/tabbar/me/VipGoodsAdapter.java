@@ -31,27 +31,21 @@ public class VipGoodsAdapter extends TTBaseMultiItemAdapter<VipGoodsModel> {
 
         if (vipGoodsModel.getItemType() == VipGoodsModel.MODEL_TYPE_GOODS) {
             baseViewHolder.setText(R.id.vip_title_tv,vipGoodsModel.getName())
-                    .setText(R.id.vip_money_tv,"￥" + vipGoodsModel.getMoney())
+                    .setText(R.id.vip_money_tv,vipGoodsModel.getMoney())
                     .setText(R.id.vip_sup_title_tv,vipGoodsModel.getSubTitle());
 
             TextView yjTv = baseViewHolder.getView(R.id.yj_tv);
             yjTv.setText("原价：￥" + vipGoodsModel.getYuanJia() + ".00");
             yjTv.setPaintFlags(yjTv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
-            int rootCardBg = vipGoodsModel.isSelect() ? getContext().getColor(R.color.yellow_vip_text_mon_s) : getContext().getColor(R.color.black);
-            int cardBg = vipGoodsModel.isSelect() ? getContext().getColor(R.color.black) : getContext().getColor(R.color.white);
+            // 选中状态使用主题蓝色边框，未选中使用浅蓝色边框
+            int rootCardBg = vipGoodsModel.isSelect() ? getContext().getColor(R.color.app_color) : 0xFFE8F0FE;
 
             CardView rootCardView = baseViewHolder.getView(R.id.root_card_v);
             rootCardView.setCardBackgroundColor(rootCardBg);
-
-            CardView cardView = baseViewHolder.getView(R.id.show_card_view);
-            cardView.setCardBackgroundColor(cardBg);
         }else if (vipGoodsModel.getItemType() == VipGoodsModel.MODEL_TYPE_HEADER) {
             baseViewHolder.setText(R.id.user_nike_name_tv,vipGoodsModel.getName())
                     .setText(R.id.vip_time_tv,vipGoodsModel.getVipTime());
-
-            TextView timeTv = baseViewHolder.findView(R.id.vip_time_tv);
-            timeTv.setTextColor(vipGoodsModel.getTextColor());
 
         }else if (vipGoodsModel.getItemType() == VipGoodsModel.MODEL_TYPE_TITLE) {
             baseViewHolder.setText(R.id.title_tv,vipGoodsModel.getName());

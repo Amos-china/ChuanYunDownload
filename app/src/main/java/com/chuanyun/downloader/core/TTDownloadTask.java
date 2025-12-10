@@ -1,7 +1,19 @@
 package com.chuanyun.downloader.core;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.core.app.NotificationCompat;
+
+import com.chuanyun.downloader.R;
 import com.chuanyun.downloader.models.AppSettingsModel;
 import com.xunlei.downloadlib.XLTaskHelper;
 import com.xunlei.downloadlib.parameter.XLTaskInfo;
@@ -9,6 +21,7 @@ import com.chuanyun.downloader.app.App;
 import com.chuanyun.downloader.dao.DownloadDao;
 import com.chuanyun.downloader.models.TorrentFileInfoModel;
 import com.chuanyun.downloader.utils.FileUtils;
+import com.chuanyun.downloader.utils.NetworkUtils;
 import com.chuanyun.downloader.utils.StorageHelper;
 
 import java.util.ArrayList;
@@ -82,6 +95,15 @@ public class  TTDownloadTask {
             return fileInfoModel;
         }
 
+        Context context = App.getApp();
+        if (context != null && NetworkUtils.isMobileNetwork(context)) {
+            AppSettingsModel settingsModel = AppSettingsModel.getSettingsModel();
+            if (!settingsModel.isUseMobileDownload()) {
+                Toast.makeText(context, "当前设置禁止使用移动数据下载", Toast.LENGTH_SHORT).show();
+                return fileInfoModel;
+            }
+        }
+
         try {
             String downloadPath = StorageHelper.createDownloadDir();
             String videoPath = downloadPath + "/" + fileInfoModel.getHash() + "/" + fileInfoModel.getIndex() + "/";
@@ -127,6 +149,7 @@ public class  TTDownloadTask {
             if (downloadSuccessListener != null) {
                 downloadSuccessListener.downloadSuccess(infoModel);
             }
+            notifyDownloadComplete(infoModel);
             startNexDownload();
         }else {
             if (downloadTaskListener != null) {
@@ -136,6 +159,51 @@ public class  TTDownloadTask {
                     startNexDownload();
                 }
             }
+        }
+    }
+
+    private void notifyDownloadComplete(TorrentFileInfoModel infoModel) {
+        AppSettingsModel settingsModel = AppSettingsModel.getSettingsModel();
+        boolean ringNotice = settingsModel.isRingNotice();
+        boolean statusNotice = settingsModel.isStatusBarNotice();
+        if (!ringNotice && !statusNotice) {
+            return;
+        }
+        Context context = App.getApp();
+        if (context == null) {
+            return;
+        }
+        if (ringNotice) {
+            try {
+                Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                if (uri != null) {
+                    Ringtone ringtone = RingtoneManager.getRingtone(context, uri);
+                    if (ringtone != null) {
+                        ringtone.play();
+                    }
+                }
+            } catch (Exception e) {
+                Log.i(TAG, "play ringtone error: " + e.getMessage());
+            }
+        }
+        if (statusNotice) {
+            NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            if (manager == null) {
+                return;
+            }
+            String channelId = "download_complete_id";
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel channel = new NotificationChannel(channelId, "下载完成通知", NotificationManager.IMPORTANCE_DEFAULT);
+                manager.createNotificationChannel(channel);
+            }
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
+                    .setSmallIcon(R.mipmap.logo)
+                    .setContentTitle("下载完成")
+                    .setContentText(infoModel.getName())
+                    .setAutoCancel(true);
+            Notification notification = builder.build();
+            int notificationId = infoModel.getInfoId().hashCode();
+            manager.notify(notificationId, notification);
         }
     }
 

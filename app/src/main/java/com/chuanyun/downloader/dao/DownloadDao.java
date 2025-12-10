@@ -29,7 +29,7 @@ public interface DownloadDao {
     @Query("Delete FROM download_info where info_id=:infoId")
     Completable deleteDownloadInfo(String infoId);
 
-    @Query("SELECT * FROM download_info where download_status=2 order by create_time asc")
+    @Query("SELECT * FROM download_info where download_status=2 ORDER BY create_time DESC")
     Single<List<TorrentFileInfoModel>> getCompleteTaskInfoList();
 
     @Query("SELECT * FROM download_info where (download_status=1 or download_status=0)")

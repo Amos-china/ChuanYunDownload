@@ -164,6 +164,15 @@ public class VipCenterActivity extends BaseActivity {
 
         userVIPXZ.setText("《" + indexModel.getXzbt() + "》");
 
+        // 勾选"我已阅读并同意"时自动弹出会员须知
+        vipCB.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked && buttonView.isPressed()) {
+                // 只有用户手动点击时才弹出须知，程序设置不触发
+                vipCB.setChecked(false);
+                userXZAction();
+            }
+        });
+
     }
 
     private void checkShowNotice() {
@@ -351,7 +360,7 @@ public class VipCenterActivity extends BaseActivity {
                         vipCB.setChecked(true);
                     }
                 });
-        showCustomPopupView(showUserContentPopupView, false);
+        showCustomPopupView(showUserContentPopupView, true);
     }
 
 

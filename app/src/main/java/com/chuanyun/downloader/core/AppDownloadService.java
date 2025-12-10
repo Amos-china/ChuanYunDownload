@@ -4,14 +4,19 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Binder;
 import android.os.IBinder;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.chuanyun.downloader.R;
+import com.chuanyun.downloader.models.AppSettingsModel;
 
 public class AppDownloadService extends Service {
     public class AppDownloadBinder extends Binder {
@@ -22,6 +27,22 @@ public class AppDownloadService extends Service {
 
     private final IBinder binder = new AppDownloadBinder();
     private TTDownloadTask downloadTask;
+
+    private final BroadcastReceiver batteryReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (Intent.ACTION_BATTERY_LOW.equals(action)) {
+                AppSettingsModel settingsModel = AppSettingsModel.getSettingsModel();
+                if (!settingsModel.isLowBatteryDownload()) {
+                    if (downloadTask != null) {
+                        downloadTask.stopAllTask();
+                    }
+                    Toast.makeText(context, "电量过低，已暂停所有下载任务", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    };
 
     public TTDownloadTask createDownloadTask() {
         if (downloadTask == null) {
@@ -47,11 +68,19 @@ public class AppDownloadService extends Service {
                 .setSmallIcon(R.mipmap.logo)
                 .build();
         startForeground(1, notification);
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_BATTERY_LOW);
+        registerReceiver(batteryReceiver, filter);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        try {
+            unregisterReceiver(batteryReceiver);
+        } catch (IllegalArgumentException ignored) {
+        }
     }
 
     @Nullable

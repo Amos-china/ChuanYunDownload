@@ -257,7 +257,7 @@
         <meta-data android:name="com.xunlei.download.RECOMMENDED_MAX_VOD_CONCURRENT_DOWNLOADS" android:value="3"/>
         <meta-data android:name="com.xunlei.download.SHOW_NOTIFY" android:value="false"/>
         <meta-data android:name="com.xunlei.download.SERVICE_START_COMMAND" android:value="2"/>
-        <meta-data android:name="com.xunlei.download.APP_KEY" android:value="bpIzNjAxNTsxNTA0MDk0ODg4LjQyODAwMA&amp;&amp;OxNw==^a2cec7^10e7f1756b15519e20ffb6cf0fbf671f==B9A58B^718E27A5C7A2957EC266BD5AC"/>
+        <meta-data android:name="com.xunlei.download.APP_KEY" android:value="bpIzNjAxNTsxNTA0MDk0ODg4LjQyODAwMA&amp;&amp;OxNw==d6cd1156ac092473ef^4^519afb44c32db41a93b==15242DAB2293E55B172^7C5179^A288B"/>
         <meta-data android:name="com.xunlei.download.RECOMMENDED_MAX_TOTAL_CONCURRENT_DOWNLOADS" android:value="5"/>
 
         <provider

@@ -113,6 +113,10 @@ public abstract class LazyLoadFragment extends Fragment {
             return;
         }
 
+        if (visible && !shouldTriggerVisible()) {
+            return;
+        }
+
         // 检查父Fragment是否可见
         if (visible && isParentInvisible()) {
             return;

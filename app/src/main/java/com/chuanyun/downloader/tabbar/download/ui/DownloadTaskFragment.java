@@ -15,10 +15,12 @@ import com.chuanyun.downloader.base.fragment.BaseLazyFragment;
 import com.chuanyun.downloader.core.IDownloadTaskListener;
 import com.chuanyun.downloader.core.TTDownloadService;
 import com.chuanyun.downloader.dao.DownloadDao;
+import com.chuanyun.downloader.models.AppSettingsModel;
 import com.chuanyun.downloader.models.TorrentFileInfoModel;
 import com.chuanyun.downloader.popup.ShowFilePathPopupView;
 import com.chuanyun.downloader.tabbar.download.adapter.DownloadIndexAdapter;
 import com.chuanyun.downloader.utils.ClipboardHelper;
+import com.chuanyun.downloader.utils.NetworkUtils;
 import com.chuanyun.downloader.utils.OpenFileUtils;
 
 import java.util.List;
@@ -75,6 +77,10 @@ public class DownloadTaskFragment extends BaseLazyFragment {
                         || downloadInfo.getDownloadStatus() == TorrentFileInfoModel.DOWNLOAD_STATUS_WAIT) {
                     if (TTDownloadService.getInstance().checkFileDownload(downloadInfo)) {
                         TTDownloadService.getInstance().downloadTorrent(downloadInfo);
+                        AppSettingsModel settingsModel = AppSettingsModel.getSettingsModel();
+                        if (settingsModel.isUseMobileDownload()) {
+                            NetworkUtils.showMobileDataToast(getContext());
+                        }
                     }else {
                         showToast("种子文件已被删除");
                     }
@@ -142,7 +148,7 @@ public class DownloadTaskFragment extends BaseLazyFragment {
             });
         }else {
 
-            TTDownloadService.getInstance().setDownloadSuccessListener(fileInfoModel -> ThreadUtils.runOnUiThread(() -> downloadIndexAdapter.addData(0,fileInfoModel)));
+            TTDownloadService.getInstance().setDownloadSuccessListener(fileInfoModel -> ThreadUtils.runOnUiThread(() -> downloadIndexAdapter.addData(0, fileInfoModel)));
 
             Disposable disposable = downloadDao.getCompleteTaskInfoList()
                     .subscribeOn(Schedulers.io())
@@ -153,6 +159,10 @@ public class DownloadTaskFragment extends BaseLazyFragment {
     }
 
     public void downloadAllTask() {
+        AppSettingsModel settingsModel = AppSettingsModel.getSettingsModel();
+        if (settingsModel.isUseMobileDownload()) {
+            NetworkUtils.showMobileDataToast(getContext());
+        }
         TTDownloadService.getInstance().downloadAllTask();
     }
 
@@ -186,6 +196,10 @@ public class DownloadTaskFragment extends BaseLazyFragment {
                 }else {
                     if (TTDownloadService.getInstance().checkFileDownload(fileInfoModel)) {
                         TTDownloadService.getInstance().downloadTorrent(fileInfoModel);
+                        AppSettingsModel settingsModel = AppSettingsModel.getSettingsModel();
+                        if (settingsModel.isUseMobileDownload()) {
+                            NetworkUtils.showMobileDataToast(getContext());
+                        }
                     } else {
                         showToast("种子文件已被删除");
                     }

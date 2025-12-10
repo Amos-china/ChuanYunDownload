@@ -18,11 +18,16 @@ import com.chuanyun.downloader.base.fragment.BaseLazyFragment;
 import com.chuanyun.downloader.core.IAddMagnetTaskListener;
 import com.chuanyun.downloader.core.TTDownloadService;
 import com.chuanyun.downloader.dao.TorrentDao;
+import com.chuanyun.downloader.eventBusModel.TorrentManagerEvent;
 import com.chuanyun.downloader.models.TTTorrentInfo;
 import com.chuanyun.downloader.tabbar.home.ui.TorrentDetailActivity;
 import com.chuanyun.downloader.tabbar.torrent.adapter.TorrentHistoryAdapter;
 import com.chuanyun.downloader.utils.ClipboardHelper;
 import com.chuanyun.downloader.utils.StorageHelper;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -62,6 +67,9 @@ public class TorrentListFragment extends BaseLazyFragment {
 
     @Override
     protected void initViews() {
+        // 注册 EventBus，用于接收列表更新事件
+        registerEventBus();
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         torrentHistoryAdapter = new TorrentHistoryAdapter(null);
         torrentRv.setLayoutManager(linearLayoutManager);
@@ -118,20 +126,43 @@ public class TorrentListFragment extends BaseLazyFragment {
 
     private void showMoreSheet(TTTorrentInfo torrentInfo) {
         String[] strings = new String[] {"修改文件名","复制链接","删除"};
-        showBottomSheet("",strings,(index, text) -> {
+        showBottomSheet("", strings, (index, text) -> {
             if (index == 0) {
                 updateTorrentName(torrentInfo);
-            }else if (index == 1) {
+            } else if (index == 1) {
                 if (TextUtils.isEmpty(torrentInfo.getMagnet())) {
                     showToast("导入文件无法获取链接");
                     return;
                 }
-                ClipboardHelper.copyTextToClipboard(getContext(),torrentInfo.getMagnet());
+                ClipboardHelper.copyTextToClipboard(getContext(), torrentInfo.getMagnet());
                 showToast("链接已复制");
-            }else {
+            } else {
+                // 删除操作：文件 tab 真实删除(标记 is_del=1)，收藏 tab 仅取消收藏
                 TorrentDao torrentDao = App.getApp().getAppDataBase().torrentDao();
-                torrentDao.deleteTorrentInfo(torrentInfo.getHash()).subscribeOn(Schedulers.io()).subscribe();
-                torrentHistoryAdapter.remove(torrentInfo);
+
+                if (indexType == 1) {
+                    // 文件栏目：标记删除
+                    Disposable disposable = torrentDao.setTorrentInfoDel(torrentInfo.getHash(), 1)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(() -> {
+                                torrentHistoryAdapter.remove(torrentInfo);
+                                // 通知其他列表刷新
+                                EventBus.getDefault().post(new TorrentManagerEvent());
+                            }, throwable -> Log.i(TAG, "delete torrent error: " + throwable.getMessage()));
+                    addDisposable(disposable);
+                } else {
+                    // 收藏 tab：只取消收藏
+                    Disposable disposable = torrentDao.setTorrentInfoIsLike(0, torrentInfo.getHash())
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(() -> {
+                                torrentHistoryAdapter.remove(torrentInfo);
+                                // 通知其他列表刷新（收藏状态变化）
+                                EventBus.getDefault().post(new TorrentManagerEvent());
+                            }, throwable -> Log.i(TAG, "cancel favorite error: " + throwable.getMessage()));
+                    addDisposable(disposable);
+                }
             }
         });
     }
@@ -221,6 +252,14 @@ public class TorrentListFragment extends BaseLazyFragment {
 
     @Override
     protected void lazyLoad() {
+        getData();
+    }
+
+
+    // 接收种子管理/解析/收藏状态变更后的刷新事件
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onTorrentManagerEvent(TorrentManagerEvent event) {
+        page = 0;
         getData();
     }
 

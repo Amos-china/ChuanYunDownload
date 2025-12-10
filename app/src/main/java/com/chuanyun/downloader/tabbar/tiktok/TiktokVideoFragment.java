@@ -18,6 +18,7 @@ import com.chuanyun.downloader.login.popup.UserLoginPopupView;
 import com.chuanyun.downloader.models.ApiIndexModel;
 import com.chuanyun.downloader.models.ApiRootModel;
 import com.chuanyun.downloader.tabbar.me.ui.VipCenterActivity;
+import com.chuanyun.downloader.utils.NetworkUtils;
 import com.chuanyun.downloader.web.WebViewController;
 
 import java.io.File;
@@ -83,6 +84,8 @@ public class TiktokVideoFragment extends LazyLoadFragment {
         if (mVideoView != null) {
             mVideoView.resume();
         }
+
+        NetworkUtils.showMobileDataToast(getContext());
 
         tikTokEngine = new TikTokEngine(getContext());
 
@@ -303,6 +306,8 @@ public class TiktokVideoFragment extends LazyLoadFragment {
                 return;
             }
         }
+
+        NetworkUtils.showMobileDataToast(getContext());
 
         showLoadingDialog("正在下载");
         OkHttpClient client = new OkHttpClient();

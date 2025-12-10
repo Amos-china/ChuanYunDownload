@@ -128,4 +128,16 @@
     <color name="gray_aaa">#AAAAAA</color>
     <color name="gray_666">#666666</color>
     <color name="black_0a0a0a">#0A0A0A</color>
+
+    <!-- 美化主题色 (基于app_color蓝色) -->
+    <color name="app_color_light">#E6F0FF</color>
+    <color name="app_color_dark">#0052CC</color>
+    <color name="vip_gold_start">#F7D774</color>
+    <color name="vip_gold_end">#D4A84B</color>
+    <color name="vip_card_bg">#1A1A2E</color>
+    <color name="vip_card_border">#E6C068</color>
+    <color name="card_shadow">#1A000000</color>
+    <color name="text_secondary">#8E8E93</color>
+    <color name="divider_light">#F0F0F0</color>
+    <color name="surface_elevated">#FAFAFA</color>
 </resources>

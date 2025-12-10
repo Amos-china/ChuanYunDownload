@@ -4,8 +4,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/gray_e2e2e2">
+    android:background="@color/bg_color">
 
+    <!-- 顶部导航栏 (恢复原样式) -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,65 +43,126 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:clipToPadding="false">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <com.chuanyun.downloader.base.view.CustomItemLinearLayout
-                android:id="@+id/name_cll"
+            <!-- 账户信息卡片 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="账户信息"
+                android:textColor="#666666"
+                android:textSize="13sp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="4dp"/>
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cll_title_str="昵称"
-                app:cll_sub_title_str="@string/app_name"
-                app:cll_show_bottom_line_view="true"/>
+                app:cardCornerRadius="10dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/white">
 
-            <com.chuanyun.downloader.base.view.CustomItemLinearLayout
-                android:id="@+id/set_acctno_cll"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="4dp">
+
+                    <com.chuanyun.downloader.base.view.CustomItemLinearLayout
+                        android:id="@+id/name_cll"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cll_title_str="昵称"
+                        app:cll_sub_title_str="@string/app_name"
+                        app:cll_show_top_view="false"
+                        app:cll_show_bottom_line_view="true"/>
+
+                    <com.chuanyun.downloader.base.view.CustomItemLinearLayout
+                        android:id="@+id/set_acctno_cll"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cll_title_str="设置账号"
+                        app:cll_show_top_view="false"
+                        app:cll_show_bottom_line_view="true"/>
+
+                    <com.chuanyun.downloader.base.view.CustomItemLinearLayout
+                        android:id="@+id/bind_email_cll"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cll_title_str="绑定邮箱"
+                        app:cll_show_top_view="false"
+                        app:cll_show_bottom_line_view="false"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- 安全设置卡片 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="安全设置"
+                android:textColor="#666666"
+                android:textSize="13sp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="4dp"/>
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cll_title_str="设置账号"
-                app:cll_show_top_view="false"
-                app:cll_show_bottom_line_view="true"/>
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/white">
 
-            <com.chuanyun.downloader.base.view.CustomItemLinearLayout
-                android:id="@+id/chang_password_cll"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cll_title_str="修改密码"
-                app:cll_show_top_view="false"
-                app:cll_show_bottom_line_view="true"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="4dp">
 
-            <com.chuanyun.downloader.base.view.CustomItemLinearLayout
-                android:id="@+id/reset_password_cll"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cll_title_str="重置密码"
-                app:cll_show_top_view="false"
-                app:cll_show_bottom_line_view="true"/>
+                    <com.chuanyun.downloader.base.view.CustomItemLinearLayout
+                        android:id="@+id/chang_password_cll"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cll_title_str="修改密码"
+                        app:cll_show_top_view="false"
+                        app:cll_show_bottom_line_view="true"/>
 
-            <com.chuanyun.downloader.base.view.CustomItemLinearLayout
-                android:id="@+id/bind_email_cll"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cll_title_str="绑定邮箱"
-                app:cll_show_top_view="false"
-                app:cll_show_bottom_line_view="false"/>
+                    <com.chuanyun.downloader.base.view.CustomItemLinearLayout
+                        android:id="@+id/reset_password_cll"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cll_title_str="重置密码"
+                        app:cll_show_top_view="false"
+                        app:cll_show_bottom_line_view="false"/>
 
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- 退出登录按钮 -->
             <com.coorchice.library.SuperTextView
                 android:id="@+id/loginOut_tv"
                 android:layout_width="match_parent"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:layout_height="45dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
                 android:layout_marginTop="40dp"
+                android:layout_marginBottom="20dp"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:text="退出登录"
                 android:gravity="center"
-                app:stv_corner="23dp"
-                app:stv_solid="@color/black"/>
+                app:stv_corner="10dp"
+                app:stv_solid="@color/app_color"/>
 
         </LinearLayout>
     </ScrollView>
