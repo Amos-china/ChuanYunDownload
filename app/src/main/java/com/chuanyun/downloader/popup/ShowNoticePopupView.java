@@ -1,6 +1,7 @@
 package com.chuanyun.downloader.popup;
 
 import android.content.Context;
+import android.text.Html;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -63,7 +64,8 @@ public class ShowNoticePopupView extends TTBaseCenterPopupview {
         super.onCreate();
 
         titleTv.setText(title);
-        contentTv.setText(content);
+        // 支持HTML富文本
+        contentTv.setText(Html.fromHtml(content, Html.FROM_HTML_MODE_LEGACY));
         doneTv.setText(doneTitle);
     }
 

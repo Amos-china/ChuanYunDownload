@@ -2,6 +2,8 @@ package com.chuanyun.downloader.base.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -179,7 +181,7 @@ public abstract class BaseLazyFragment extends BaseFragment {
     public void showAlertView(String title, String message, OnConfirmListener confirmListener) {
         new XPopup.Builder(getContext())
                 .isDestroyOnDismiss(true) //对于只使用一次的弹窗，推荐设置这个
-                .asConfirm(title,message,confirmListener)
+                .asConfirm(title,Html.fromHtml(message, Html.FROM_HTML_MODE_LEGACY),confirmListener)
                 .show();
     }
 
@@ -253,13 +255,15 @@ public abstract class BaseLazyFragment extends BaseFragment {
                               String doneTitle,
                               OnCancelListener cancelListener,
                               OnConfirmListener confirmListener) {
+        // 支持HTML富文本
+        CharSequence content = (msg instanceof Spanned) ? msg : Html.fromHtml(msg.toString(), Html.FROM_HTML_MODE_LEGACY);
         new XPopup.Builder(getContext())
                 .customHostLifecycle(getLifecycle())
                 .borderRadius(XPopupUtils.dp2px(getContext(),15))
                 .dismissOnTouchOutside(true)
                 .dismissOnBackPressed(true)
                 .isDestroyOnDismiss(true)
-                .asConfirm(title,msg,cancelTitle,doneTitle,confirmListener,cancelListener,false)
+                .asConfirm(title,content,cancelTitle,doneTitle,confirmListener,cancelListener,false)
                 .show();
     }
 
@@ -270,13 +274,15 @@ public abstract class BaseLazyFragment extends BaseFragment {
                               boolean dismissTouchOutside,
                               OnCancelListener cancelListener,
                               OnConfirmListener confirmListener) {
+        // 支持HTML富文本
+        CharSequence content = (msg instanceof Spanned) ? msg : Html.fromHtml(msg.toString(), Html.FROM_HTML_MODE_LEGACY);
         new XPopup.Builder(getContext())
                 .customHostLifecycle(getLifecycle())
                 .borderRadius(XPopupUtils.dp2px(getContext(),15))
                 .dismissOnTouchOutside(dismissTouchOutside)
                 .dismissOnBackPressed(dismissTouchOutside)
                 .isDestroyOnDismiss(true)
-                .asConfirm(title,msg,cancelTitle,doneTitle,confirmListener,cancelListener,false)
+                .asConfirm(title,content,cancelTitle,doneTitle,confirmListener,cancelListener,false)
                 .show();
     }
 

@@ -2,7 +2,7 @@ package com.chuanyun.downloader.login.model;
 
 public class UserLoginInfoMessage {
 
-    public static final String MMKV_ACCOUNT_PASSWORD = "MMKV_ACCOUNT_PASSWORD";
+    public static final String MMKV_ACCOUNT_PASSWORD = "MMKV_ACCOUNT_PASSWORD_KEY";
 
     private String account;
     private String password;

@@ -99,8 +99,7 @@ public class LauncherActivity extends BaseActivity {
                App.getApp().setApiIndexModel(indexModel);
                if (checkIndexModel(indexModel)) {
                    if (checkAppVersion(indexModel)) {
-                       startMainController();
-//                       loginUser();
+                       loginUser();
                    }
                }
            }else {
@@ -126,6 +125,29 @@ public class LauncherActivity extends BaseActivity {
             }
         });
         addDisposable(disposable);
+    }
+
+    private void loginUser() {
+        if (UserLoginManager.checkUserLogin()) {
+            UserLoginInfoMessage message = UserLoginManager.getUserLoginMessage();
+            Disposable disposable = userEngine.userLogin(message.getAccount(),message.getPassword(),App.getApp().getDeviceUuid())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(rootModel -> {
+                        if (rootModel.getCode() == HttpConfig.STATUS_OK) {
+                            LoginModel loginModel = JSON.parseObject(rootModel.getData(),LoginModel.class);
+                            UserLoginManager.setLoginInfo(loginModel);
+                            startMainController();
+                        }else  {
+                            showAlertView(rootModel.getCode() + "",
+                                    rootModel.getMsg(),
+                                    this::loginUser);
+                        }
+                    }, throwable -> showAlertView("连接错误",throwable.getMessage(),this::loginUser));
+            addDisposable(disposable);
+        }else {
+            startMainController();
+        }
     }
 
     private void startMainController() {

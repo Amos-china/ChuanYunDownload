@@ -111,8 +111,18 @@ public class UserEngine extends BaseEngine {
 
     public Observable<ApiRootModel<String>> pay(String gid,int payType) {
         String type = payType == 0 ? "ali" : "wx";
+        // 使用uid作为用户ID
         LoginModel loginModel = UserLoginManager.getLoginInfo();
-        return request.pay(loginModel.getInfo().getEmail(),gid,type);
+        String uid = loginModel.getInfo().getUid();
+        android.util.Log.d("PAY_DEBUG", "========== 支付请求调试 ==========");
+        android.util.Log.d("PAY_DEBUG", "URL: api/1000/cyxz/pay");
+        android.util.Log.d("PAY_DEBUG", "account(uid): " + uid);
+        android.util.Log.d("PAY_DEBUG", "gid: " + gid);
+        android.util.Log.d("PAY_DEBUG", "type: " + type);
+        android.util.Log.d("PAY_DEBUG", "email: " + loginModel.getInfo().getEmail());
+        android.util.Log.d("PAY_DEBUG", "acctno: " + loginModel.getInfo().getAcctno());
+        android.util.Log.d("PAY_DEBUG", "=====================================");
+        return request.pay(uid,gid,type);
     }
 
     public Disposable ping() {

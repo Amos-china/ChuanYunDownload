@@ -1,5 +1,6 @@
 package com.chuanyun.downloader.tabbar.me.ui;
 
+import android.graphics.Rect;
 import android.text.Html;
 import android.view.View;
 import android.widget.CheckBox;
@@ -106,9 +107,49 @@ public class VipCenterActivity extends BaseActivity {
 
         goodsAdapter = new VipGoodsAdapter(null);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 6, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(goodsAdapter);
+
+        // 会员权益两列之间的间距：保持左右贴边16dp，中间间距更小
+        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                int position = parent.getChildAdapterPosition(view);
+                if (position == RecyclerView.NO_POSITION || goodsAdapter == null) {
+                    return;
+                }
+
+                VipGoodsModel model = goodsAdapter.getItem(position);
+                if (model == null || model.getItemType() != VipGoodsModel.MODEL_TYPE_ITEM) {
+                    // 只调整会员权益项，其它类型不影响
+                    return;
+                }
+
+                RecyclerView.LayoutManager lm = parent.getLayoutManager();
+                if (!(lm instanceof GridLayoutManager)) {
+                    return;
+                }
+
+                GridLayoutManager.LayoutParams lp = (GridLayoutManager.LayoutParams) view.getLayoutParams();
+                int spanIndex = lp.getSpanIndex();
+
+                float density = getResources().getDisplayMetrics().density;
+                int edgeSpace = (int) (16 * density + 0.5f);   // 两侧 16dp
+                int middleSpace = (int) (6 * density + 0.5f);  // 中间总间距 6dp
+                int halfMiddle = middleSpace / 2;
+
+                if (spanIndex == 0) {
+                    // 左列：左边贴边 16dp，右边给一半中间间距
+                    outRect.left = edgeSpace;
+                    outRect.right = halfMiddle;
+                } else {
+                    // 右列：右边贴边 16dp，左边给一半中间间距
+                    outRect.left = halfMiddle;
+                    outRect.right = edgeSpace;
+                }
+            }
+        });
 
         goodsAdapter.setOnItemClickListener((adapter, view, position) -> {
             VipGoodsModel goodsModel = goodsAdapter.getItem(position);
@@ -176,6 +217,12 @@ public class VipCenterActivity extends BaseActivity {
     }
 
     private void checkShowNotice() {
+        // 只有非会员才弹出会员说明
+        LoginModel loginModel = UserLoginManager.getLoginInfo();
+        if (loginModel != null && loginModel.getInfo().getVipStatus() == 1) {
+            // 已是会员，不弹出
+            return;
+        }
         if (indexModel.getSftcydsm() == 1) {
             Disposable disposable = Observable.interval(1, TimeUnit.SECONDS)
                     .take(1)
@@ -235,6 +282,7 @@ public class VipCenterActivity extends BaseActivity {
                     headerModel.setItemType(VipGoodsModel.MODEL_TYPE_HEADER);
                     headerModel.setName(loginModel.getInfo().getName());
                     headerModel.setVipTime(loginModel.getInfo().getUserVipStr());
+                    headerModel.setVipStatus(loginModel.getInfo().getVipStatus());
                     int color = 0;
                     if (loginModel.getInfo().getVipStatus() == 0) {
                         color = getColor(R.color.black);
@@ -270,7 +318,7 @@ public class VipCenterActivity extends BaseActivity {
 
                     String[] items = new String[]{
                             "多文件下载",
-                            "无限次数下载",
+                            "无限次下载播放",
                             "无广告",
                             "专属客服"};
                     int[] images = new int[]{
@@ -358,6 +406,9 @@ public class VipCenterActivity extends BaseActivity {
                 index -> {
                     if (index == 1) {
                         vipCB.setChecked(true);
+                    } else {
+                        // 点击"不同意"时取消选中
+                        vipCB.setChecked(false);
                     }
                 });
         showCustomPopupView(showUserContentPopupView, true);

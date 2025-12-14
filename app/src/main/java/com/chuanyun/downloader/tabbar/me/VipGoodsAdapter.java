@@ -1,6 +1,7 @@
 package com.chuanyun.downloader.tabbar.me;
 
 import android.graphics.Paint;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -46,6 +47,9 @@ public class VipGoodsAdapter extends TTBaseMultiItemAdapter<VipGoodsModel> {
         }else if (vipGoodsModel.getItemType() == VipGoodsModel.MODEL_TYPE_HEADER) {
             baseViewHolder.setText(R.id.user_nike_name_tv,vipGoodsModel.getName())
                     .setText(R.id.vip_time_tv,vipGoodsModel.getVipTime());
+            // 只有会员有效时才显示VIP图标
+            TextView vipBadge = baseViewHolder.getView(R.id.vip_badge_tv);
+            vipBadge.setVisibility(vipGoodsModel.getVipStatus() == 1 ? View.VISIBLE : View.GONE);
 
         }else if (vipGoodsModel.getItemType() == VipGoodsModel.MODEL_TYPE_TITLE) {
             baseViewHolder.setText(R.id.title_tv,vipGoodsModel.getName());
@@ -67,9 +71,11 @@ public class VipGoodsAdapter extends TTBaseMultiItemAdapter<VipGoodsModel> {
             public int getSpanSize(int position) {
                 VipGoodsModel model = getData().get(position);
                 if (model.getItemType() == VipGoodsModel.MODEL_TYPE_ITEM) {
-                    return 1;
-                }else {
+                    // 权益项占3格（总共6格），即每行2个
                     return 3;
+                }else {
+                    // 其他项占满整行
+                    return 6;
                 }
             }
         });

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -250,14 +251,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void showAlertView(String meg, String cancelText, String doneText, OnConfirmListener confirmListener, OnCancelListener cancelListener) {
         new XPopup.Builder(this)
                 .isDestroyOnDismiss(true) //对于只使用一次的弹窗，推荐设置这个
-                .asConfirm("提示信息",meg,cancelText,doneText,confirmListener,cancelListener,false)
+                .asConfirm("提示信息",Html.fromHtml(meg, Html.FROM_HTML_MODE_LEGACY),cancelText,doneText,confirmListener,cancelListener,false)
                 .show();
     }
 
     public void showAlertView(String title, String message, OnConfirmListener confirmListener) {
         new XPopup.Builder(this)
                 .isDestroyOnDismiss(true) //对于只使用一次的弹窗，推荐设置这个
-                .asConfirm(title,message,confirmListener)
+                .asConfirm(title,Html.fromHtml(message, Html.FROM_HTML_MODE_LEGACY),confirmListener)
                 .show();
     }
 

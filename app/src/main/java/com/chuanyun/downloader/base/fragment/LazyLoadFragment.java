@@ -3,6 +3,8 @@ package com.chuanyun.downloader.base.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -254,13 +256,15 @@ public abstract class LazyLoadFragment extends Fragment {
                               String doneTitle,
                               OnCancelListener cancelListener,
                               OnConfirmListener confirmListener) {
+        // 支持HTML富文本
+        CharSequence content = (msg instanceof Spanned) ? msg : Html.fromHtml(msg.toString(), Html.FROM_HTML_MODE_LEGACY);
         new XPopup.Builder(getContext())
                 .customHostLifecycle(getLifecycle())
                 .borderRadius(XPopupUtils.dp2px(getContext(),15))
                 .dismissOnTouchOutside(true)
                 .dismissOnBackPressed(true)
                 .isDestroyOnDismiss(true)
-                .asConfirm(title,msg,cancelTitle,doneTitle,confirmListener,cancelListener,false)
+                .asConfirm(title,content,cancelTitle,doneTitle,confirmListener,cancelListener,false)
                 .show();
     }
 
@@ -271,13 +275,15 @@ public abstract class LazyLoadFragment extends Fragment {
                               boolean dismissTouchOutside,
                               OnCancelListener cancelListener,
                               OnConfirmListener confirmListener) {
+        // 支持HTML富文本
+        CharSequence content = (msg instanceof Spanned) ? msg : Html.fromHtml(msg.toString(), Html.FROM_HTML_MODE_LEGACY);
         new XPopup.Builder(getContext())
                 .customHostLifecycle(getLifecycle())
                 .borderRadius(XPopupUtils.dp2px(getContext(),15))
                 .dismissOnTouchOutside(dismissTouchOutside)
                 .dismissOnBackPressed(dismissTouchOutside)
                 .isDestroyOnDismiss(true)
-                .asConfirm(title,msg,cancelTitle,doneTitle,confirmListener,cancelListener,false)
+                .asConfirm(title,content,cancelTitle,doneTitle,confirmListener,cancelListener,false)
                 .show();
     }
 }

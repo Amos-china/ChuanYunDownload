@@ -25,7 +25,7 @@
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 app:cardCornerRadius="32dp"
-                app:cardElevation="4dp"
+                app:cardElevation="0dp"
                 app:cardBackgroundColor="#FFFFFF">
 
                 <ImageView
@@ -39,10 +39,11 @@
 
             <!-- VIP 标识 -->
             <TextView
+                android:id="@+id/vip_badge_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|right"
-                android:background="@color/app_color"
+                android:background="@drawable/bg_vip_badge_gold"
                 android:text="VIP"
                 android:textColor="#FFFFFF"
                 android:textSize="8sp"
@@ -50,7 +51,8 @@
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
                 android:paddingTop="1dp"
-                android:paddingBottom="1dp"/>
+                android:paddingBottom="1dp"
+                android:visibility="gone"/>
 
         </FrameLayout>
 
@@ -71,25 +73,19 @@
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"/>
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/vip_time_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="#33FFFFFF"
+                android:background="@drawable/bg_vip_time_tag"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="4dp"
-                android:paddingBottom="4dp">
-
-                <TextView
-                    android:id="@+id/vip_time_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="有效期"
-                    android:textSize="12sp"
-                    android:textColor="#FFFFFF"/>
-
-            </LinearLayout>
+                android:paddingBottom="4dp"
+                android:text="有效期"
+                android:textSize="12sp"
+                android:textColor="#FFFFFF"/>
 
         </LinearLayout>
 

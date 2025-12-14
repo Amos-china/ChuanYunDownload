@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alibaba.fastjson.JSON;
 import com.coorchice.library.SuperTextView;
 import com.tools.aplayer.APlayerActivity;
 import com.chuanyun.downloader.R;
@@ -19,22 +20,25 @@ import com.chuanyun.downloader.bat.UmengKeyUtils;
 import com.chuanyun.downloader.core.TTDownloadService;
 import com.chuanyun.downloader.dao.DownloadDao;
 import com.chuanyun.downloader.dao.TorrentDao;
+import com.chuanyun.downloader.eventBusModel.TorrentManagerEvent;
 import com.chuanyun.downloader.httpService.HttpConfig;
 import com.chuanyun.downloader.login.engine.UserEngine;
 import com.chuanyun.downloader.login.model.LoginModel;
+import com.chuanyun.downloader.login.model.UserInfoModel;
 import com.chuanyun.downloader.login.model.UserLoginManager;
 import com.chuanyun.downloader.login.popup.UserLoginPopupView;
 import com.chuanyun.downloader.models.ApiIndexModel;
 import com.chuanyun.downloader.models.AppSettingsModel;
+import com.chuanyun.downloader.models.ApiRootModel;
 import com.chuanyun.downloader.models.TTTorrentInfo;
 import com.chuanyun.downloader.models.TorrentFileInfoModel;
 import com.chuanyun.downloader.popup.OnlinePlayPasrePopup;
 import com.chuanyun.downloader.tabbar.home.adapter.TorrentDetailAdapter;
 import com.chuanyun.downloader.tabbar.me.ui.VipCenterActivity;
 import com.chuanyun.downloader.utils.NetworkUtils;
-import com.chuanyun.downloader.eventBusModel.TorrentManagerEvent;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -79,6 +83,7 @@ public class TorrentDetailActivity extends BaseActivity {
     private boolean showVideo = true;
 
     private UserEngine userEngine;
+    private Disposable vipInfoDisposable;
 
     @Override
     protected int getLayoutId() {
@@ -106,15 +111,8 @@ public class TorrentDetailActivity extends BaseActivity {
         setStateBarHeight();
 
         ApiIndexModel indexModel = App.getApp().getApiIndexModel();
-        msTv.setVisibility(View.VISIBLE);
         msTv.setText(indexModel.getJfxhsm());
-
-        if (UserLoginManager.checkUserLogin()) {
-            LoginModel loginModel = UserLoginManager.getLoginInfo();
-            if (loginModel.getInfo().getVipStatus() == 1) {
-                msTv.setVisibility(View.GONE);
-            }
-        }
+        refreshVipTipsVisibility();
 
         fileNumTv.setText("文件数:" + torrentInfo.getFileCount());
         fileSizeTv.setText("总大小:" + torrentInfo.getSize());
@@ -175,6 +173,12 @@ public class TorrentDetailActivity extends BaseActivity {
 
     private void checkUser(TorrentFileInfoModel torrentFileInfoModel) {
         if (UserLoginManager.checkUserLogin()) {
+            LoginModel loginModel = UserLoginManager.getLoginInfo();
+            if (isVipUser(loginModel)) {
+                torrentInfo.setCurrentPlayIndex(torrentFileInfoModel.getIndex());
+                playFileModel(torrentFileInfoModel);
+                return;
+            }
             showDiaLog("");
             Disposable disposable = userEngine.fen(1)
                     .subscribeOn(Schedulers.io())
@@ -300,6 +304,51 @@ public class TorrentDetailActivity extends BaseActivity {
         addDisposable(disposable);
     }
 
+    private void startVipInfoAutoRefresh() {
+        stopVipInfoAutoRefresh();
+        if (!UserLoginManager.checkUserLogin()) {
+            return;
+        }
+        vipInfoDisposable = Observable.interval(0, 5, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .flatMap(aLong -> buildVipInfoRefreshObservable()
+                        .onErrorResumeNext(Observable.empty()))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(rootModel -> {
+                    if (rootModel.getCode() == HttpConfig.STATUS_OK) {
+                        LoginModel loginModel = UserLoginManager.getLoginInfo();
+                        if (loginModel != null) {
+                            UserInfoModel infoModel = JSON.parseObject(rootModel.getData(), UserInfoModel.class);
+                            if (infoModel != null) {
+                                loginModel.setInfo(infoModel);
+                                UserLoginManager.setLoginInfo(loginModel);
+                                refreshVipTipsVisibility();
+                            }
+                        }
+                    }
+                }, Throwable::printStackTrace);
+        addDisposable(vipInfoDisposable);
+    }
+
+    private void stopVipInfoAutoRefresh() {
+        if (vipInfoDisposable != null && !vipInfoDisposable.isDisposed()) {
+            vipInfoDisposable.dispose();
+        }
+        vipInfoDisposable = null;
+    }
+
+    private Observable<ApiRootModel<String>> buildVipInfoRefreshObservable() {
+        return userEngine.heartbeat()
+                .doOnNext(rootModel -> {
+                    if (rootModel.getTime() != 0) {
+                        App.getApp().setCloudTime(rootModel.getTime());
+                    }
+                })
+                .onErrorResumeNext(Observable.empty())
+                .ignoreElements()
+                .andThen(userEngine.getUserInfo());
+    }
+
     private void showBuyVipAlert() {
         ApiIndexModel indexModel = App.getApp().getApiIndexModel();
         showAlertView("",
@@ -386,46 +435,29 @@ public class TorrentDetailActivity extends BaseActivity {
     }
 
     private void download() {
+        LoginModel loginModel = UserLoginManager.getLoginInfo();
+        if (isVipUser(loginModel)) {
+            showDiaLog("正在添加任务",false);
+            Disposable vipDisposable = getDownloadTaskObservable()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(this::handleDownloadSuccess, this::handleDownloadError);
+            addDisposable(vipDisposable);
+            return;
+        }
+
         showDiaLog("正在添加任务",false);
         Disposable disposable = userEngine.fen(2)
                 .subscribeOn(Schedulers.io())
                 .flatMap(rootModel -> {
                     if (rootModel.getCode() == HttpConfig.STATUS_OK) {
-                        return Observable.fromIterable(torrentDetailAdapter.getData());
+                        return getDownloadTaskObservable();
                     }else {
                         return Observable.error(new Throwable("" + "-1"));
                     }
                 })
-                .filter(fileInfoModel -> !fileInfoModel.isDownload() && fileInfoModel.isSelect())
-                .map(fileInfoModel -> {
-                    TTDownloadService.getInstance().downloadTorrent(fileInfoModel);
-                    fileInfoModel.setSelect(false);
-                    return fileInfoModel;
-                })
-                .count()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-                    hideLoadingDialog();
-                    if (aLong > 0) {
-                        torrentDetailAdapter.notifyItemRangeChanged(0,torrentDetailAdapter.getItemCount(),TorrentDetailAdapter.RELOAD_SELECT);
-                        showToast("已添加至任务列表");
-                        setSelectTotalNumUi();
-
-                        UmengKeyUtils.uploadDownload(this,2);
-
-                        AppSettingsModel settingsModel = AppSettingsModel.getSettingsModel();
-                        if (settingsModel.isUseMobileDownload()) {
-                            NetworkUtils.showMobileDataToast(this);
-                        }
-                    }
-                }, throwable -> {
-                    hideLoadingDialog();
-                    if (throwable.getMessage().equals("-1")) {
-                        showBuyVipAlert();
-                    }else {
-                        showToast(throwable.getMessage());
-                    }
-                });
+                .subscribe(this::handleDownloadSuccess, this::handleDownloadError);
         addDisposable(disposable);
     }
 
@@ -464,5 +496,93 @@ public class TorrentDetailActivity extends BaseActivity {
                 addDisposable(disposable);
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshVipInfoFromServer();
+        startVipInfoAutoRefresh();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopVipInfoAutoRefresh();
+    }
+
+    private void refreshVipInfoFromServer() {
+        refreshVipTipsVisibility();
+        if (!UserLoginManager.checkUserLogin()) {
+            return;
+        }
+        Disposable disposable = buildVipInfoRefreshObservable()
+                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(rootModel -> {
+                    if (rootModel.getCode() == HttpConfig.STATUS_OK) {
+                        LoginModel loginModel = UserLoginManager.getLoginInfo();
+                        UserInfoModel infoModel = JSON.parseObject(rootModel.getData(), UserInfoModel.class);
+                        if (loginModel != null && infoModel != null) {
+                            loginModel.setInfo(infoModel);
+                            UserLoginManager.setLoginInfo(loginModel);
+                        }
+                        refreshVipTipsVisibility();
+                    }
+                }, Throwable::printStackTrace);
+        addDisposable(disposable);
+    }
+
+    private void refreshVipTipsVisibility() {
+        LoginModel loginModel = UserLoginManager.getLoginInfo();
+        if (isVipUser(loginModel)) {
+            msTv.setVisibility(View.GONE);
+        } else {
+            msTv.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private Observable<Long> getDownloadTaskObservable() {
+        return Observable.fromIterable(torrentDetailAdapter.getData())
+                .filter(fileInfoModel -> !fileInfoModel.isDownload() && fileInfoModel.isSelect())
+                .map(fileInfoModel -> {
+                    TTDownloadService.getInstance().downloadTorrent(fileInfoModel);
+                    fileInfoModel.setSelect(false);
+                    return fileInfoModel;
+                })
+                .count()
+                .toObservable();
+    }
+
+    private void handleDownloadSuccess(Long aLong) {
+        hideLoadingDialog();
+        if (aLong > 0) {
+            torrentDetailAdapter.notifyItemRangeChanged(0,torrentDetailAdapter.getItemCount(),TorrentDetailAdapter.RELOAD_SELECT);
+            showToast("已添加至任务列表");
+            setSelectTotalNumUi();
+
+            UmengKeyUtils.uploadDownload(this,2);
+
+            AppSettingsModel settingsModel = AppSettingsModel.getSettingsModel();
+            if (settingsModel.isUseMobileDownload()) {
+                NetworkUtils.showMobileDataToast(this);
+            }
+        }
+    }
+
+    private void handleDownloadError(Throwable throwable) {
+        hideLoadingDialog();
+        if ("-1".equals(throwable.getMessage())) {
+            showBuyVipAlert();
+        }else {
+            showToast(throwable.getMessage());
+        }
+    }
+
+    private boolean isVipUser(LoginModel loginModel) {
+        return loginModel != null
+                && loginModel.getInfo() != null
+                && loginModel.getInfo().getVipStatus() == 1;
     }
 }

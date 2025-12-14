@@ -1,6 +1,7 @@
 package com.chuanyun.downloader.popup;
 
 import android.content.Context;
+import android.text.Html;
 import android.text.TextUtils;
 import android.widget.TextView;
 
@@ -69,7 +70,8 @@ public class ShowUserContentPopupView extends TTBaseBottomPopupView {
 
         titleTv.setText(TextUtils.isEmpty(title) ? "提示信息" : title);
 
-        contentTv.setText(message);
+        // 支持HTML富文本
+        contentTv.setText(Html.fromHtml(message, Html.FROM_HTML_MODE_LEGACY));
 
         if (!TextUtils.isEmpty(doneTitle)) {
             doneStv.setText(doneTitle);

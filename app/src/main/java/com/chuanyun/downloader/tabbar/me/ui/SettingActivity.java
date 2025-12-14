@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import com.chuanyun.downloader.R;
 import com.chuanyun.downloader.base.activity.BaseActivity;
+import com.chuanyun.downloader.login.model.LoginModel;
+import com.chuanyun.downloader.login.model.UserLoginManager;
 import com.chuanyun.downloader.models.AppSettingsModel;
 import com.chuanyun.downloader.utils.StorageHelper;
 
@@ -58,6 +60,9 @@ public class SettingActivity extends BaseActivity {
 
         setStateBarHeight();
 
+        // 检查并重置任务数（会员过期时自动恢复到3）
+        checkAndResetTaskCount();
+
         downloadNumTv.setText(settingsModel.getDownloadTaskCount() + "");
         ringNoticeIm.setImageResource(getMipmapSrc(settingsModel.isRingNotice()));
         lowBatteryIm.setImageResource(getMipmapSrc(settingsModel.isLowBatteryDownload()));
@@ -67,6 +72,11 @@ public class SettingActivity extends BaseActivity {
         pathTv.setText(StorageHelper.createDownloadDir());
     }
 
+    @OnClick(R.id.path_tv)
+    public void storagePathAction() {
+        showToast("安卓安全限制，不允许更改存储目录");
+    }
+
     private int getMipmapSrc(boolean checked) {
         return checked ? R.mipmap.check_s : R.mipmap.check_n;
     }
@@ -74,7 +84,7 @@ public class SettingActivity extends BaseActivity {
     @OnClick(R.id.minus_im)
     public void downloadTaskMinusImAction() {
         int count = settingsModel.getDownloadTaskCount();
-        if (count == 1) {
+        if (count <= 1) {
             return;
         }
         count --;
@@ -86,13 +96,36 @@ public class SettingActivity extends BaseActivity {
     @OnClick(R.id.sum_im)
     public void downloadTaskSumImAction() {
         int count = settingsModel.getDownloadTaskCount();
-        if (count == 9) {
+        // 非会员最大3，会员最大9
+        int maxCount = isVipUser() ? 9 : 3;
+        if (count >= maxCount) {
+            if (!isVipUser()) {
+                showToast("开通会员后可增加同时下载任务数");
+            }
             return;
         }
         count ++;
         downloadNumTv.setText(count + "");
         settingsModel.setDownloadTaskCount(count);
         AppSettingsModel.saveSettings(settingsModel);
+    }
+
+    private boolean isVipUser() {
+        LoginModel loginModel = UserLoginManager.getLoginInfo();
+        if (loginModel == null || loginModel.getInfo() == null) {
+            return false;
+        }
+        // getVipStatus: 0=普通用户, 1=会员有效, 2=会员已过期
+        return loginModel.getInfo().getVipStatus() == 1;
+    }
+
+    private void checkAndResetTaskCount() {
+        // 非会员或会员过期，任务数最大为3
+        if (!isVipUser() && settingsModel.getDownloadTaskCount() > 3) {
+            settingsModel.setDownloadTaskCount(3);
+            AppSettingsModel.saveSettings(settingsModel);
+            downloadNumTv.setText("3");
+        }
     }
 
 

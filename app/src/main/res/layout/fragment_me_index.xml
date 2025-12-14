@@ -67,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                app:cardElevation="2dp"
+                app:cardElevation="0dp"
                 app:cardCornerRadius="10dp">
 
                 <RelativeLayout
@@ -130,7 +130,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:id="@+id/vip_cll"
@@ -183,7 +183,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 app:cardCornerRadius="10dp"
-                app:cardElevation="2dp">
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -192,10 +192,19 @@
                     android:background="@color/white">
 
                     <com.chuanyun.downloader.base.view.CustomItemLinearLayout
+                        android:id="@+id/cll_setting"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cll_title_str="软件设置"
+                        app:cll_left_im_src="@mipmap/shezhi"
+                        app:cll_show_top_view="false"
+                        app:cll_show_bottom_line_view="true"/>
+
+                    <com.chuanyun.downloader.base.view.CustomItemLinearLayout
                         android:id="@+id/gf_kf_cll"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:cll_title_str="问题反馈"
+                        app:cll_title_str="联系客服"
                         app:cll_show_top_view="false"
                         app:cll_show_bottom_line_view="true"
                         app:cll_left_im_src="@mipmap/kefu"/>
@@ -206,15 +215,6 @@
                         android:layout_height="wrap_content"
                         app:cll_title_str="分享软件"
                         app:cll_left_im_src="@mipmap/fenxiang"
-                        app:cll_show_top_view="false"
-                        app:cll_show_bottom_line_view="true"/>
-
-                    <com.chuanyun.downloader.base.view.CustomItemLinearLayout
-                        android:id="@+id/cll_setting"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:cll_title_str="软件设置"
-                        app:cll_left_im_src="@mipmap/shezhi"
                         app:cll_show_top_view="false"
                         app:cll_show_bottom_line_view="true"/>
 

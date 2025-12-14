@@ -4,7 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 
 public class LoginModel {
 
-    public static final String MMKV_LOGIN_INFO = "MMKV_LOGIN_INFO";
+    public static final String MMKV_LOGIN_INFO = "MMKV_LOGIN_INFO_KEY";
 
 
     @JSONField(name = "token")

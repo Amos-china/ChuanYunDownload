@@ -119,17 +119,21 @@ public class UserCenterActivity extends BaseActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(stringApiRootModel -> {
                     hideLoadingDialog();
-                    showToast(stringApiRootModel.getMsg());
-                    if (stringApiRootModel.getCode() == HttpConfig.STATUS_OK) {
-                        UserLoginManager.clearLoginInfo();
-                        EventBus.getDefault().post(new LoginOutEvent());
-                        finish();
-                    }
+                    // 无论服务器返回什么，都执行本地退出
+                    doLocalLogout();
                 },throwable -> {
                     hideLoadingDialog();
-                    showToast(throwable.getMessage());
+                    // 网络错误时也执行本地退出
+                    doLocalLogout();
                 });
         addDisposable(disposable);
+    }
+
+    private void doLocalLogout() {
+        UserLoginManager.clearLoginInfo();
+        EventBus.getDefault().post(new LoginOutEvent());
+        showToast("已退出登录");
+        finish();
     }
 
     @OnClick(R.id.back_im)

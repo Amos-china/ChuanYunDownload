@@ -21,6 +21,7 @@ public class VipGoodsModel implements MultiItemEntity {
     private String subTitle;
     private String yuanJia;
     private int textColor;
+    private int vipStatus; // 0=普通用户, 1=会员有效, 2=会员已过期
 
     private int itemType;
 
@@ -119,5 +120,13 @@ public class VipGoodsModel implements MultiItemEntity {
 
     public void setTextColor(int textColor) {
         this.textColor = textColor;
+    }
+
+    public int getVipStatus() {
+        return vipStatus;
+    }
+
+    public void setVipStatus(int vipStatus) {
+        this.vipStatus = vipStatus;
     }
 }

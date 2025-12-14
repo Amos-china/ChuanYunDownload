@@ -82,7 +82,7 @@ public interface HttpRequestInterface {
     //ali=支付宝，wx=微信
     @FormUrlEncoded
     @POST("api/1000/cyxz/pay")
-    Observable<ApiRootModel<String>> pay(@Field("account") String account,@Field("gid") String gid,@Field("type") String type);
+    Observable<ApiRootModel<String>> pay(@Field("uid") String uid,@Field("gid") String gid,@Field("type") String type);
 
     //修改昵称
     @FormUrlEncoded

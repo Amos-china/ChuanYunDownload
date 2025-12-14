@@ -1,6 +1,7 @@
 package com.chuanyun.downloader.popup;
 
 import android.content.Context;
+import android.text.Html;
 import android.widget.TextView;
 
 import com.coorchice.library.SuperTextView;
@@ -58,7 +59,8 @@ public class AppUpdatePopupView extends TTBaseCenterPopupview {
 
         sizeTv.setText(indexModel.getGxfbt());
 
-        contentTv.setText(indexModel.getGxnr());
+        // 支持HTML富文本
+        contentTv.setText(Html.fromHtml(indexModel.getGxnr(), Html.FROM_HTML_MODE_LEGACY));
 
         progressBar.setVisibility(GONE);
 

@@ -20,8 +20,7 @@ import com.chuanyun.downloader.login.model.UserLoginManager;
 import com.chuanyun.downloader.login.popup.UserLoginPopupView;
 import com.chuanyun.downloader.models.ApiIndexModel;
 import com.chuanyun.downloader.popup.UserSignInPopupView;
-import com.chuanyun.downloader.utils.StringEncryptor;
-import com.chuanyun.downloader.web.WebViewController;
+import com.chuanyun.downloader.utils.ClipboardHelper;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -156,13 +155,16 @@ public class MeIndexFragment extends BaseLazyFragment {
                     .observeOn(AndroidSchedulers.mainThread())
                     .flatMap(rootModel -> {
                         if (rootModel.getCode() == HttpConfig.STATUS_OK) {
+                            if (rootModel.getMsg() != null && rootModel.getMsg().contains("签到成功")) {
+                                showToast("签到成功");
+                            }
                             return userEngine.getUserInfo();
                         }else {
                             return Observable.error(new Throwable(rootModel.getMsg()));
                         }
                     })
                     .subscribe(rootModel -> {
-                        showToast("签到成功");
+                        hideLoadingDialog();
                         if (rootModel.getCode() == HttpConfig.STATUS_OK) {
                             UserInfoModel userInfo = JSON.parseObject(rootModel.getData(),UserInfoModel.class);
                             loginModel.setInfo(userInfo);
@@ -253,24 +255,40 @@ public class MeIndexFragment extends BaseLazyFragment {
 //                    ClipboardHelper.copyTextToClipboard(getContext(),apiIndexModel.getKfqq());
 //                    showToast("客服QQ已复制");
 //                });
-        LoginModel loginModel = UserLoginManager.getLoginInfo();
-        if (loginModel == null || loginModel.getInfo() == null) {
-            showToast("请先登录");
-            return;
-        }
         ApiIndexModel indexModel = getApiIndexModelSafe();
         if (indexModel == null) {
             showToast("数据初始化中，请稍后再试");
             return;
         }
-        String userId = loginModel.getInfo().getUid();
-        String enUserID = StringEncryptor.encrypt(userId);
-        startWebController(indexModel.getGfkf() + enUserID,"问题反馈");
 
-    }
+        String title = indexModel.getKfbt();
+        String content = indexModel.getKfsm();
+        String copyBtnText = indexModel.getFuzhi();
+        String qq = indexModel.getKfqq();
 
-    private void startWebController(String url, String title) {
-        WebViewController.loadWeb(getContext(),url,title);
+        if (title == null || title.length() == 0) {
+            title = "官方客服";
+        }
+        if (content == null || content.length() == 0) {
+            content = "";
+        }
+        if (copyBtnText == null || copyBtnText.length() == 0) {
+            copyBtnText = "复制客服QQ";
+        }
+
+        showAlertView(title,
+                content,
+                "取消",
+                copyBtnText,
+                () -> {
+                }, () -> {
+                    if (qq == null || qq.length() == 0) {
+                        showToast("客服QQ为空");
+                        return;
+                    }
+                    ClipboardHelper.copyTextToClipboard(getContext(), qq);
+                    showToast("客服QQ已复制");
+                });
     }
 
     private ApiIndexModel getApiIndexModelSafe() {
