@@ -53,8 +53,8 @@ public class UserEngine extends BaseEngine {
         return request.getCode(account,getCodeType(type));
     }
 
-    public Observable<ApiRootModel<String>> userReg(String account, String code, String password, String udid) {
-        return request.userReg(account, code, password, udid);
+    public Observable<ApiRootModel<String>> userReg(String account, String code,String invId, String password, String udid) {
+        return request.userReg(account, code,invId , password, udid);
     }
 
     public Observable<ApiRootModel<String>> userLogin(String account, String password, String udid) {
@@ -97,8 +97,8 @@ public class UserEngine extends BaseEngine {
         return request.heartbeat(token);
     }
 
-    public Observable<ApiRootModel<String>> getGoodsList() {
-        return request.getGoods(token);
+    public Observable<ApiRootModel<String>> getGoodsList(int page) {
+        return request.getGoods(page);
     }
 
     public Observable<ApiRootModel<String>> fen(int fen) {
@@ -113,7 +113,7 @@ public class UserEngine extends BaseEngine {
         String type = payType == 0 ? "ali" : "wx";
         // 使用uid作为用户ID
         LoginModel loginModel = UserLoginManager.getLoginInfo();
-        String uid = loginModel.getInfo().getUid();
+        String uid = loginModel.getInfo().getEmail();
         android.util.Log.d("PAY_DEBUG", "========== 支付请求调试 ==========");
         android.util.Log.d("PAY_DEBUG", "URL: api/1000/cyxz/pay");
         android.util.Log.d("PAY_DEBUG", "account(uid): " + uid);

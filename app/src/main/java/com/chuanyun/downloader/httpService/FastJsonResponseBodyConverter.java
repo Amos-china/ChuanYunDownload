@@ -58,14 +58,10 @@ public class FastJsonResponseBodyConverter<T> implements Converter<ResponseBody,
                 }
             }
 
-            Log.d("TAG", "convert: " + body);
-
             return parseObjectWhitBody(body);
 
         } catch (Exception exception){
             value.close();
-
-            Log.i("TAG",exception.getMessage());
 
            String body = "{"
                     + "\"code\":500,"

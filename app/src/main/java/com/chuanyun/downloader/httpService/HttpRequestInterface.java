@@ -32,86 +32,86 @@ public interface HttpRequestInterface {
     Observable<ApiRootModel<RecommendRootModel>> getRecommendList();
 
     @FormUrlEncoded
-    @POST("api/1000/cyxz/getCode")
+    @POST("api/user/1000/chuanyunxiazai/1/getCode")
     Observable<ApiRootModel<String>> getCode(@Field("account") String account, @Field("type") String type);
 
 
     @FormUrlEncoded
-    @POST("api/1000/cyxz/reg")
-    Observable<ApiRootModel<String>> userReg(@Field("account") String account, @Field("code") String code, @Field("password") String password, @Field("udid") String udid);
+    @POST("api/user/1000/chuanyunxiazai/1/reg")
+    Observable<ApiRootModel<String>> userReg(@Field("account") String account, @Field("code") String code,@Field("invid") String invId, @Field("password") String password, @Field("udid") String udid);
 
     @FormUrlEncoded
-    @POST("api/1000/cyxz/logon")
+    @POST("api/user/1000/chuanyunxiazai/1/logon")
     Observable<ApiRootModel<String>> userLogin(@Field("account") String account, @Field("password") String password, @Field("udid") String udid);
 
     @FormUrlEncoded
-    @POST("api/1000/cyxz/info")
+    @POST("api/user/1000/chuanyunxiazai/1/info")
     Observable<ApiRootModel<String>> getUserInfo(@Field("token") String token);
 
 
     @FormUrlEncoded
-    @POST("api/1000/cyxz/vip")
+    @POST("api/user/1000/chuanyunxiazai/1/vip")
     Observable<ApiRootModel<String>> checkVip(@Field("token") String token);
 
     //心跳
     @FormUrlEncoded
-    @POST("api/1000/cyxz/heartbeat")
+    @POST("api/user/1000/chuanyunxiazai/1/heartbeat")
     Observable<ApiRootModel<String>> heartbeat(@Field("token") String token);
 
     //修改密码
     @FormUrlEncoded
-    @POST("api/1000/cyxz/modifyPwd")
+    @POST("api/user/1000/chuanyunxiazai/1/modifyPwd")
     Observable<ApiRootModel<String>> modifyPwd(@Field("token") String token,@Field("password") String password, @Field("newPassword") String newPassword);
 
     //重置密码
     @FormUrlEncoded
-    @POST("api/1000/cyxz/resetPwd")
+    @POST("api/user/1000/chuanyunxiazai/1/resetPwd")
     Observable<ApiRootModel<String>> resetPwd(@Field("account") String account,@Field("code") String code, @Field("newPassword") String newPassword);
 
     //设置账号
     @FormUrlEncoded
-    @POST("api/1000/cyxz/setAcctno")
+    @POST("api/user/1000/chuanyunxiazai/1/setAcctno")
     Observable<ApiRootModel<String>> setAcctno(@Field("token") String token,@Field("acctno") String acctno);
 
     //绑定邮箱
     @FormUrlEncoded
-    @POST("api/1000/cyxz/setEmail")
+    @POST("api/user/1000/chuanyunxiazai/1/setEmail")
     Observable<ApiRootModel<String>> setEmail(@Field("token") String token,@Field("email") String email,@Field("code") String code);
 
 
     //ali=支付宝，wx=微信
     @FormUrlEncoded
-    @POST("api/1000/cyxz/pay")
-    Observable<ApiRootModel<String>> pay(@Field("uid") String uid,@Field("gid") String gid,@Field("type") String type);
+    @POST("api/user/1000/chuanyunxiazai/1/pay")
+    Observable<ApiRootModel<String>> pay(@Field("account") String account,@Field("gid") String gid,@Field("type") String type);
 
     //修改昵称
     @FormUrlEncoded
-    @POST("api/1000/cyxz/modifyName")
+    @POST("api/user/1000/chuanyunxiazai/1/modifyName")
     Observable<ApiRootModel<String>> modifyName(@Field("token") String token,@Field("name") String name);
 
     //上传头像 file 二进制
     @FormUrlEncoded
-    @POST("api/1000/cyxz/modifyPic")
+    @POST("api/user/1000/chuanyunxiazai/1/modifyPic")
     Observable<ApiRootModel<String>> modifyPic(@Field("token") String token,@Field("file") String file);
 
     @FormUrlEncoded
-    @POST("api/1000/cyxz/logout")
+    @POST("api/user/1000/chuanyunxiazai/1/logout")
     Observable<ApiRootModel<String>> loginOut(@Field("token") String token);
 
     @FormUrlEncoded
-    @POST("api/1000/cyxz/goods")
-    Observable<ApiRootModel<String>> getGoods(@Field("token") String token);
+    @POST("api/user/1000/chuanyunxiazai/1/goods")
+    Observable<ApiRootModel<String>> getGoods(@Field("pg") int pg);
 
     @FormUrlEncoded
-    @POST("api/1000/cyxz/orderQuery")
+    @POST("api/user/1000/chuanyunxiazai/1/orderQuery")
     Observable<ApiRootModel<String>> orderQuery(@Field("token") String token, @Field("order") String order);
 
     @FormUrlEncoded
-    @POST("api/1000/cyxz/signIn")
+    @POST("api/user/1000/chuanyunxiazai/1/signIn")
     Observable<ApiRootModel<String>> userSignIn(@Field("token") String token);
 
     @FormUrlEncoded
-    @POST("api/1000/cyxz/fen")
+    @POST("api/user/1000/chuanyunxiazai/1/fen")
     Observable<ApiRootModel<String>> fen(@Field("token") String token, @Field("fenid") int fenid);
 
     @GET("video/random.php")

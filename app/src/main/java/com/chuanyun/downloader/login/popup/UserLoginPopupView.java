@@ -255,7 +255,7 @@ public class UserLoginPopupView extends TTBaseBottomPopupView {
             invValue = StringEncryptor.decrypt(invId);
         }
 
-        Disposable disposable = userEngine.userReg(email,code,password,uuid)
+        Disposable disposable = userEngine.userReg(email,code,invValue,password,uuid)
                 .subscribeOn(Schedulers.io())
                 .flatMap(rootModel -> {
                     if (rootModel.getCode() == HttpConfig.STATUS_OK) {
